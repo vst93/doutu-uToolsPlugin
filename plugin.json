@@ -7,7 +7,7 @@
 	"features": [
 	    {
 	        "code": "dt",
-	        "cmds":["dt", "斗图"]
+	        "cmds":["斗图"]
 	    }
 	]
 }

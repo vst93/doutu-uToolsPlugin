@@ -1,0 +1,28 @@
+body{
+    margin: 0;
+    width: 720px;
+}
+.content{
+    width: 100%;
+    max-width: 750px;
+    margin: 0;
+}
+.content ul{
+    width: 100%;
+}
+.content ul li{
+    width: 25%;
+    list-style:none;
+    float:left;
+}
+
+.content ul li img{
+    width: 100%;
+}
+
+.float_img{
+    display: none;
+    position:relative;
+    top: 0;
+    left: 0;
+}
