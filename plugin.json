@@ -1,0 +1,13 @@
+{
+	"pluginName": "斗图",
+	"description": "斗图插件，开发中",
+	"author": "vst",
+	"main": "index.html",
+	"version": "0.1.0",
+	"features": [
+	    {
+	        "code": "dt",
+	        "cmds":["dt", "斗图"]
+	    }
+	]
+}
