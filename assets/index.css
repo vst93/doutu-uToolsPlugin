@@ -6,6 +6,7 @@ body{
     width: 100%;
     max-width: 750px;
     margin: 0;
+    z-index: 0;
 }
 .content ul{
     width: 100%;
@@ -14,6 +15,8 @@ body{
     width: 25%;
     list-style:none;
     float:left;
+    height: 0;
+    padding-bottom: 25%;
 }
 
 .content ul li img{
@@ -21,6 +24,7 @@ body{
 }
 
 .float_img{
+    border: solid 1px #dadada;
     display: none;
     position:relative;
     top: 0;

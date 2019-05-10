@@ -1,9 +1,12 @@
 {
 	"pluginName": "斗图",
-	"description": "斗图插件，开发中",
+	"description": "斗图表情搜索插件",
+	"homepage": "https://github.com/vst93/utools-doutuPlugin",
 	"author": "vst",
 	"main": "index.html",
-	"version": "0.1.0",
+	"logo": "logo.jpg",
+	"version": "0.1.2",
+	"preload":"preload.js",
 	"features": [
 	    {
 	        "code": "dt",
