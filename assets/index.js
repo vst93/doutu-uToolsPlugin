@@ -2,6 +2,7 @@ var text=''
 var page=1
 var loading = false
 var tt=false
+var the_img
 utools.onPluginEnter(({ code, type, payload }) => {
     utools.setExpendHeight(0);
     utools.setSubInput(({
@@ -18,6 +19,7 @@ $(document).keydown(e => {
     switch (e.keyCode) {
         case 13:
             utools.setExpendHeight(500);
+            $(".content ul").html('');
             getPic(text,1)
             break;
     }
@@ -72,9 +74,8 @@ function getPic(word,page_num){
     var append_html = ""
     var url = "https://www.doutula.com/search?type=photo&more=1&keyword="+word+"&page="+page_num;
     $.get(url, function(data){
-        console.log(data)
+        // console.log(data)
         var urlArr = window.matchImgUrl(data);
-        console.log(urlArr)
         append_html = "";
         urlArr.forEach(function(u){  
             append_html  += "<li><img onmouseenter=\"bigImg(this)\" src='"+u+"' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";            
@@ -82,7 +83,6 @@ function getPic(word,page_num){
         // $.each(data.items, function(i,item){
         //      append_html  += "<li><img onmouseenter=\"bigImg(this)\" src='"+item.picUrl+"' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
         //   });
-        console.log(append_html)
         $(".content ul").append(append_html);
         setTimeout(function(){ loading = false}, 1000);
     });
@@ -96,7 +96,7 @@ function bigImg(that){
     y = $(that).position().left;
     // url = $(that).children('img').attr('src')
     url = $(that).attr('src')
-    console.log('onMouse:'+url)
+    // console.log('onMouse:'+url)
 
     $('.float_img').css({
         'position':'relative',
@@ -124,4 +124,4 @@ function buttonClick()
 {
     // window.copyImg(tt.getElementsByTagName("img").item(0).src);
     window.copyImg(tt.src);
-} 
+}
