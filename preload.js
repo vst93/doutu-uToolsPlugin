@@ -18,8 +18,9 @@ copyImg = imgUrl => {
         return
     } else if (os.type() == 'Darwin') {
         // mac 系统下载网络图片到 temp 目录，然后以 NSFilenamesPboardType 的 Buffer 写入clipboard
-        var the_dir = utools.getPath('temp') + '/utoolsDoutuPlugin/';
-        var path = the_dir + 'temp.' + imgUrl.substring(imgUrl.lastIndexOf(".") + 1)
+        var the_dir = utools.getPath('temp') + 'utoolsDoutuPlugin/';
+        // var path = the_dir + 'temp.' + imgUrl.substring(imgUrl.lastIndexOf(".") + 1)
+        var path = the_dir + 'temp.'
         //检查临时目录并创建
         fs.exists(the_dir, function (exists) {
             if (!exists) {
@@ -34,12 +35,19 @@ copyImg = imgUrl => {
                 reader.readAsDataURL(blob);
                 reader.onloadend = function () {
                     let base64Data = reader.result;
+                    var dataHeader = /^data:image\/(\w+);base64,/gim;
+                    var imageType = 'gif';
+                    while (re = dataHeader.exec(base64Data)) {
+                        imageType = re[1];
+                        break;
+                    }
                     // 过滤data:URL
-                    base64Data = base64Data.replace(/^data:image\/\w+;base64,/, '');
-                    var dataBuffer = new Buffer(base64Data, 'base64');
-
+                    base64Data = base64Data.replace(/^data:.+;base64,/, '');
+                    // base64Data = base64Data.replace(/^data:text\/plain;base64,/, 'data:image/gif;base64,');
+                    
+                    var dataBuffer = new Buffer.from(base64Data, 'base64');
+                    path = path + imageType;
                     fs.writeFile(path, dataBuffer, err => {
-
                         clipboard.writeBuffer(
                             'NSFilenamesPboardType',
                             Buffer.from(`
@@ -52,7 +60,6 @@ copyImg = imgUrl => {
                   </plist>
                 `)
                         )
-
                     });
                     utools.hideMainWindow()
                 };
@@ -63,22 +70,8 @@ copyImg = imgUrl => {
         utools.showNotification('当前系统暂不支持', clickFeatureCode = null, silent = false)
     }
 
-
-
 }
 
-
-//通过canvas2d 将图片转为base64
-// function getBase64Image(img) {
-//     let canvas = document.createElement("canvas");
-//     canvas.width = img.width;
-//     canvas.height = img.height;
-//     let ctx = canvas.getContext("2d");
-//     ctx.drawImage(img, 0, 0, img.width, img.height);
-//     let ext = img.src.substring(img.src.lastIndexOf(".") + 1).toLowerCase();
-//     let dataURL = canvas.toDataURL("image/" + ext);
-//     return dataURL;
-// }
 
 matchImgUrl = str => {
     var reg = /data-original="(.*?)"/gim;

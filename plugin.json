@@ -5,12 +5,16 @@
 	"author": "vst",
 	"main": "index.html",
 	"logo": "logo.jpg",
-	"version": "0.1.4",
+	"version": "0.2.0",
 	"preload":"preload.js",
 	"features": [
 	    {
 	        "code": "dt",
-	        "cmds":["斗图"]
+	        "cmds":["斗图","doutu"]
+		},
+		{
+	        "code": "changeSource",
+	        "cmds":["切换图源","changeSource"]
 	    }
 	]
 }
