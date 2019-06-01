@@ -126,6 +126,30 @@ function getPic01(word,page_num){
     });
 }
 
+//图片来源04
+function getPic04(word,page_num){
+    loading = true
+    if(isNaN(page_num)){
+        page_num = 1;
+    }
+    if(page_num<=1){
+        $(".content ul").html('');
+    }
+    var append_html = ""
+    var url = "https://fabiaoqing.com/search/search/keyword/"+word+"/type/bq/page/"+page_num+".html";
+    $.get(url, function(data){
+        var urlArr = window.matchImgUrl(data);
+        append_html = "";
+        urlArr.forEach(function(u){  
+            append_html  += "<li><img onmouseenter=\"bigImg(this)\" src='"+u+"' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";            
+        })
+        // $.each(data.items, function(i,item){
+        //      append_html  += "<li><img onmouseenter=\"bigImg(this)\" src='"+item.picUrl+"' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
+        //   });
+        $(".content ul").append(append_html);
+        setTimeout(function(){ loading = false}, 1000);
+    });
+}
 
 function bigImg(that){
     tt = that
@@ -188,7 +212,7 @@ function changeSource(){
           utools.showNotification("已切换至图源 02", clickFeatureCode = null, silent = false)
     }else{
         num = parseInt(data.data)+1
-        if(num>3){
+        if(num>4){
             num = 1
         }
         utools.db.put({
