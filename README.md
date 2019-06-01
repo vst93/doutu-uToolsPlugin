@@ -11,6 +11,7 @@
 图源 01（默认，推荐）：https://www.52doutu.cn
 图源 02（原默认）：https://www.doutula.com/
 图源 03（不推荐）：https://pic.sogou.com
+图源 04 ：https://fabiaoqing.com
 ```
 ##### 图源切换： 
 uTools下输入 `changeSource`
@@ -26,7 +27,7 @@ uTools下输入 `changeSource`
 `v.0.1.4`
 修改图片复制方式，使得 gif 可以正常复制粘贴
 
-`v.0.2.0`
+`v.0.2.1`
 优化mac下图片复制
 添加新的图片来源
 添加图片来源切换
