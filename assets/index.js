@@ -3,14 +3,22 @@ var page=1
 var loading = false
 var tt=false
 var the_img
+var sourceNum
 utools.onPluginEnter(({ code, type, payload }) => {
-    utools.setExpendHeight(0);
-    utools.setSubInput(({
-        text
-    }) => {
-        this.text = text
-        this.page = 1 
-    }, "想搜点啥（搜索结果点击即可复制到剪切板）");
+    if(code == 'changeSource'){
+        changeSource();
+    }else{
+        utools.setExpendHeight(0);
+        utools.setSubInput(({
+            text
+        }) => {
+            this.text = text
+            this.page = 1 
+        }, "想搜点啥（搜索结果点击即可复制到剪切板）");
+    }
+
+    
+    
 });
 
 
@@ -24,6 +32,7 @@ $(document).keydown(e => {
             break;
     }
 });
+
 
 $(document).scroll(() => {
     var htmlHeight = $(document).height();  
@@ -43,7 +52,14 @@ $(document).scroll(() => {
     }
 })
 
-function getPic1(word,page_num){
+
+function getPic(word,page_num){
+    num = getSource()
+    eval("getPic"+num+"(word,page_num)");
+    // (getPic+num)(word,page_num);
+}
+//图片来源03
+function getPic03(word,page_num){
     loading = true
     if(isNaN(page_num)){
         page_num = 1;
@@ -62,8 +78,10 @@ function getPic1(word,page_num){
     });
 }
 
-//切换图片来源，待完成
-function getPic(word,page_num){
+
+
+//图片来源02
+function getPic02(word,page_num){
     loading = true
     if(isNaN(page_num)){
         page_num = 1;
@@ -74,7 +92,6 @@ function getPic(word,page_num){
     var append_html = ""
     var url = "https://www.doutula.com/search?type=photo&more=1&keyword="+word+"&page="+page_num;
     $.get(url, function(data){
-        // console.log(data)
         var urlArr = window.matchImgUrl(data);
         append_html = "";
         urlArr.forEach(function(u){  
@@ -87,6 +104,28 @@ function getPic(word,page_num){
         setTimeout(function(){ loading = false}, 1000);
     });
 }
+
+//图片来源01
+function getPic01(word,page_num){
+    loading = true
+    if(isNaN(page_num)){
+        page_num = 1;
+    }
+    if(page_num<=1){
+        $(".content ul").html('');
+    }
+    var append_html = ""
+    var url = "https://www.52doutu.cn/api/?types=search&action=searchpic&limit=20&wd="+word+"&offset="+page_num;
+    $.get(url, function(data){
+        append_html = "";
+        data.rows.forEach(function(u){  
+            append_html  += "<li><img onmouseenter=\"bigImg(this)\" src='"+u.url+"' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";            
+        })
+        $(".content ul").append(append_html);
+        setTimeout(function(){ loading = false}, 1000);
+    });
+}
+
 
 function bigImg(that){
     tt = that
@@ -124,4 +163,39 @@ function buttonClick()
 {
     // window.copyImg(tt.getElementsByTagName("img").item(0).src);
     window.copyImg(tt.src);
+}
+
+function getSource(){
+    data = utools.db.get("doutuSourceNum");
+    if(!data){
+        utools.db.put({
+            _id: "doutuSourceNum",
+            data: "01"
+          });
+        return "01";
+    }else{
+        return "0"+data.data;
+    }
+}
+
+function changeSource(){
+    data = utools.db.get("doutuSourceNum");
+    if(!data){
+        utools.db.put({
+            _id: "doutuSourceNum",
+            data: "02"
+          });
+          utools.showNotification("已切换至图源 02", clickFeatureCode = null, silent = false)
+    }else{
+        num = parseInt(data.data)+1
+        if(num>3){
+            num = 1
+        }
+        utools.db.put({
+            _id: "doutuSourceNum",
+            data: ""+num,
+            _rev: data._rev
+          });
+          utools.showNotification("已切换至图源 0"+num, clickFeatureCode = null, silent = false)
+    }
 }
