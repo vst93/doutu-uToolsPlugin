@@ -4,6 +4,7 @@ var loading = false
 var tt=false
 var the_img
 var sourceNum
+
 utools.onPluginEnter(({ code, type, payload }) => {
     if(code == 'changeSource'){
         changeSource();
@@ -16,8 +17,6 @@ utools.onPluginEnter(({ code, type, payload }) => {
             this.page = 1 
         }, "想搜点啥（搜索结果点击即可复制到剪切板）");
     }
-
-    
     
 });
 
@@ -55,11 +54,11 @@ $(document).scroll(() => {
 
 function getPic(word,page_num){
     num = getSource()
-    eval("getPic"+num+"(word,page_num)");
+    eval("getPic_"+num+"(word,page_num)");
     // (getPic+num)(word,page_num);
 }
 //图片来源03
-function getPic03(word,page_num){
+function getPic_3(word,page_num){
     loading = true
     if(isNaN(page_num)){
         page_num = 1;
@@ -81,7 +80,7 @@ function getPic03(word,page_num){
 
 
 //图片来源02
-function getPic02(word,page_num){
+function getPic_2(word,page_num){
     loading = true
     if(isNaN(page_num)){
         page_num = 1;
@@ -106,7 +105,7 @@ function getPic02(word,page_num){
 }
 
 //图片来源01
-function getPic01(word,page_num){
+function getPic_1(word,page_num){
     loading = true
     if(isNaN(page_num)){
         page_num = 1;
@@ -127,7 +126,7 @@ function getPic01(word,page_num){
 }
 
 //图片来源04
-function getPic04(word,page_num){
+function getPic_4(word,page_num){
     loading = true
     if(isNaN(page_num)){
         page_num = 1;
@@ -190,24 +189,24 @@ function buttonClick()
 }
 
 function getSource(){
-    data = utools.db.get("doutuSourceNum");
+    data = utools.db.get("doutuSourceNo");
     if(!data){
         utools.db.put({
-            _id: "doutuSourceNum",
-            data: "01"
+            _id: "doutuSourceNo",
+            data: "1"
           });
-        return "01";
+        return "1";
     }else{
-        return "0"+data.data;
+        return data.data;
     }
 }
 
 function changeSource(){
-    data = utools.db.get("doutuSourceNum");
+    data = utools.db.get("doutuSourceNo");
     if(!data){
         utools.db.put({
-            _id: "doutuSourceNum",
-            data: "02"
+            _id: "doutuSourceNo",
+            data: "2"
           });
           utools.showNotification("已切换至图源 02", clickFeatureCode = null, silent = false)
     }else{
@@ -216,10 +215,10 @@ function changeSource(){
             num = 1
         }
         utools.db.put({
-            _id: "doutuSourceNum",
-            data: ""+num,
+            _id: "doutuSourceNo",
+            data: num,
             _rev: data._rev
-          });
-          utools.showNotification("已切换至图源 0"+num, clickFeatureCode = null, silent = false)
+        });
+        utools.showNotification("已切换至图源 0"+num, clickFeatureCode = null, silent = false)
     }
 }

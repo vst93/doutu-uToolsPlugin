@@ -8,7 +8,6 @@ const fs = require('fs');
 const os = require('os');
 
 copyImg = imgUrl => {
-
     if (os.type() == 'Windows_NT') {
         // windows 系统以 html 写入clipboard
         clipboard.write({
@@ -73,6 +72,7 @@ copyImg = imgUrl => {
 }
 
 
+
 matchImgUrl = str => {
     var reg = /data-original="(.*?)"/gim;
     var res = []
@@ -81,3 +81,5 @@ matchImgUrl = str => {
     }
     return res;
 }
+
+
