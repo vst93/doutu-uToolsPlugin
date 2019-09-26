@@ -9,11 +9,13 @@
 	"preload":"preload.js",
 	"features": [
 	    {
-	        "code": "dt",
+			"code": "dt",
+			"explain": "斗图",
 	        "cmds":["斗图","doutu"]
 		},
 		{
-	        "code": "changeSource",
+			"code": "changeSource",
+			"explain": "切换图源",
 	        "cmds":["切换图源","changeSource"]
 	    }
 	]
