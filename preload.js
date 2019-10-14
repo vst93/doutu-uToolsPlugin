@@ -11,7 +11,7 @@ copyImg = imgUrl => {
     if (os.type() == 'Windows_NT') {
         // windows 系统以 html 写入clipboard
         clipboard.write({
-            html: "<img src=\"" + imgUrl + "\">",
+            html: "<img src=\"" + imgUrl + "\" data-original=\"" + imgUrl + "\" data-backup=\"" + imgUrl + "\" >",
         })
         utools.hideMainWindow()
         return
