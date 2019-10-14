@@ -6,15 +6,61 @@ const http = require('http');
 const https = require('https');
 const fs = require('fs');
 const os = require('os');
+const nativeImage = require('electron').nativeImage
 
 copyImg = imgUrl => {
     if (os.type() == 'Windows_NT') {
-        // windows 系统以 html 写入clipboard
-        clipboard.write({
-            html: "<img src=\"" + imgUrl + "\" data-original=\"" + imgUrl + "\" data-backup=\"" + imgUrl + "\" >",
-        })
-        utools.hideMainWindow()
-        return
+
+        // window 系统下载网络图片到 temp 目录，然后 以 html 写入clipboard
+        var the_dir = utools.getPath('temp') + 'utoolsDoutuPlugin/';
+        var path = the_dir + 'tempImage'+(new Date()).valueOf()+'.';
+        //检查临时目录并创建
+        fs.exists(the_dir, function (exists) {
+            if (!exists) {
+                fs.mkdir(the_dir, err => {
+                })
+            }
+        });
+        fetch(imgUrl)
+            .then(respone => respone.blob())    // 将响应体转换成blob格式数据
+            .then(blob => {
+                let reader = new FileReader();
+                reader.readAsDataURL(blob);
+                reader.onloadend = function () {
+                    let base64Data = reader.result;
+                    var dataHeader = /^data:image\/(\w+);base64,/gim;
+                    var imageType = 'gif';
+                    while (re = dataHeader.exec(base64Data)) {
+                        imageType = re[1];
+                        break;
+                    }
+                    // 过滤data:URL
+                    base64Data = base64Data.replace(/^data:.+;base64,/, '');
+                    var dataBuffer = new Buffer.from(base64Data, 'base64');
+                    path = path + imageType;
+
+                    if (utools.copyImage(dataBuffer) == false) {
+                        console.log('clipboard.write')
+                        fs.writeFile(path, dataBuffer, err => {
+                            //windows 系统以 html 写入clipboard
+                            clipboard.write({
+                                html: "<img src=\"" + path + "\" width=\"200\" alt=\"" + path + "\" >",
+                            })
+                            console.log(path)
+                        });
+                        
+                    }else{
+                        console.log('utools.copyImage')
+                    }
+
+                    utools.hideMainWindow()
+                };
+
+            })
+            .catch(console.error);
+
+
+
     } else if (os.type() == 'Darwin') {
         // mac 系统下载网络图片到 temp 目录，然后以 NSFilenamesPboardType 的 Buffer 写入clipboard
         var the_dir = utools.getPath('temp') + 'utoolsDoutuPlugin/';
@@ -43,7 +89,7 @@ copyImg = imgUrl => {
                     // 过滤data:URL
                     base64Data = base64Data.replace(/^data:.+;base64,/, '');
                     // base64Data = base64Data.replace(/^data:text\/plain;base64,/, 'data:image/gif;base64,');
-                    
+
                     var dataBuffer = new Buffer.from(base64Data, 'base64');
                     path = path + imageType;
                     fs.writeFile(path, dataBuffer, err => {
