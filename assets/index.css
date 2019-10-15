@@ -30,3 +30,33 @@ body{
     top: 0;
     left: 0;
 }
+
+.changeSourcePage{
+    display: none;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #ffffff;
+    height: 100%;
+}
+
+.changeSourcePage ul{
+    margin: 0;
+    padding: 0;
+}
+
+.changeSourcePage ul li{
+    padding: 15px 50px;
+    list-style: none;
+    background: #eaeaea;
+    font-weight: 600;
+    margin-top: 2px;
+    letter-spacing: 3px;
+}
+
+.changeSourcePage .selected{
+    background: #adabab !important;
+}
+
+

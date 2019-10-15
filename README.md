@@ -2,7 +2,7 @@
 
 方便查找斗图表情，回车搜索后，点击看中的就复制到剪切板了
 
-![](https://s2.ax1x.com/2019/05/24/VFKs0I.png)
+![UTOOLS1571132626401.png](http://yanxuan.nosdn.127.net/9cb772d7c4b07167cb8e47bd8be60a56.png)
 
 项目地址：https://github.com/vst93/utools-doutuPlugin
 
@@ -12,6 +12,8 @@
 图源 02（原默认）：https://www.doutula.com/
 图源 03（不推荐）：https://pic.sogou.com
 图源 04 ：https://fabiaoqing.com
+图源 05 ：http://www.dbbqb.com
+图源 06 ：https://b7.cn/
 ```
 ##### 图源切换： 
 uTools下输入 `changeSource`
@@ -36,6 +38,7 @@ uTools下输入 `changeSource`
 简单修复 uTools 0.8.2 无法安装问题
 
 `v0.2.5`
-优化图源切换提示语
+添加图源切换页面
 修复由于聊天软件锁定文件导致的图片某些情况复制失败
-@TODO 添加图片文件缓存自动清理
+添加图片文件缓存自动清理
+新加两个图源

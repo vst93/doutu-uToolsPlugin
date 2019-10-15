@@ -13,7 +13,7 @@ copyImg = imgUrl => {
 
         // window 系统下载网络图片到 temp 目录，然后 以 html 写入clipboard
         var the_dir = utools.getPath('temp') + 'utoolsDoutuPlugin/';
-        var path = the_dir + 'tempImage'+(new Date()).valueOf()+'.';
+        var path = the_dir + 'tempImage' + (new Date()).valueOf() + '.';
         //检查临时目录并创建
         fs.exists(the_dir, function (exists) {
             if (!exists) {
@@ -48,8 +48,8 @@ copyImg = imgUrl => {
                             })
                             console.log(path)
                         });
-                        
-                    }else{
+
+                    } else {
                         console.log('utools.copyImage')
                     }
 
@@ -65,7 +65,7 @@ copyImg = imgUrl => {
         // mac 系统下载网络图片到 temp 目录，然后以 NSFilenamesPboardType 的 Buffer 写入clipboard
         var the_dir = utools.getPath('temp') + 'utoolsDoutuPlugin/';
         // var path = the_dir + 'temp.' + imgUrl.substring(imgUrl.lastIndexOf(".") + 1)
-        var path = the_dir + 'temp.'
+        var path = the_dir + 'tempImage' + (new Date()).valueOf() + '.';
         //检查临时目录并创建
         fs.exists(the_dir, function (exists) {
             if (!exists) {
@@ -92,6 +92,7 @@ copyImg = imgUrl => {
 
                     var dataBuffer = new Buffer.from(base64Data, 'base64');
                     path = path + imageType;
+                    console.log(path)
                     fs.writeFile(path, dataBuffer, err => {
                         clipboard.writeBuffer(
                             'NSFilenamesPboardType',
@@ -118,9 +119,49 @@ copyImg = imgUrl => {
 }
 
 
+/**
+ * 清理缓存的图片
+ */
+cleanTempImageCahce = () => {
+    var theDir = utools.getPath('temp') + 'utoolsDoutuPlugin/';
+    let theFiles = [];
+    let files = fs.readdirSync(theDir);
+    files.forEach(function (item, index) {
+        let fPath = path.join(theDir, item);
+        let stat = fs.statSync(fPath);
+        if (stat.isFile() === true) {
+            theFiles.push(fPath);
+        }
+    });
+    if (theFiles.length >= 20) {
+        for (fiel_v of theFiles) {
+            fs.unlink(fiel_v, function (error) {
+                if (error) {
+                    console.log(error);
+                    return false;
+                }
+            })
+
+
+        }
+    }
+
+
+}
+
 
 matchImgUrl = str => {
     var reg = /data-original="(.*?)"/gim;
+    var res = []
+    while (re = reg.exec(str)) {
+        res.push(re[1])
+    }
+    return res;
+}
+
+
+matchImgUrl_6 = str => {
+    var reg = /<div\Wclass="colguangchang"><a.*src="(.*)"><span/gim;
     var res = []
     while (re = reg.exec(str)) {
         res.push(re[1])

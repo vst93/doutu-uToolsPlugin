@@ -4,15 +4,18 @@ var loading = false
 var tt = false
 
 var sourceArr = {
-    '1': '我爱斗图',
-    '2': '斗图啦',
-    '3': '搜狗图片',
-    '4': '发表情'
+    '1': '我爱斗图 https://www.52doutu.cn',
+    '2': '斗图啦 https://www.doutula.com',
+    '3': '搜狗图片 https://pic.sogou.com',
+    '4': '发表情 https://fabiaoqing.com',
+    '5': '逗比拯救世界 http://www.dbbqb.com',
+    '6': 'B7表情 https://b7.cn',
 };
 
 utools.onPluginEnter(({ code, type, payload }) => {
     if (code == 'changeSource') {
-        changeSource();
+        // changeSource();
+        showChangeSourcePage();
     } else {
         utools.setExpendHeight(0);
         utools.setSubInput(({
@@ -25,12 +28,12 @@ utools.onPluginEnter(({ code, type, payload }) => {
 
 });
 
-
-
 $(document).keydown(e => {
     switch (e.keyCode) {
         case 13:
             utools.setExpendHeight(500);
+            $(".changeSourcePage").hide()
+            $(".content").show();
             $(".content ul").html('');
             getPic(text, 1)
             break;
@@ -84,7 +87,6 @@ function getPic_1(word, page_num) {
     });
 }
 
-
 //图片来源02
 function getPic_2(word, page_num) {
     loading = true
@@ -102,9 +104,6 @@ function getPic_2(word, page_num) {
         urlArr.forEach(function (u) {
             append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
         })
-        // $.each(data.items, function(i,item){
-        //      append_html  += "<li><img onmouseenter=\"bigImg(this)\" src='"+item.picUrl+"' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
-        //   });
         $(".content ul").append(append_html);
         setTimeout(function () { loading = false }, 1000);
     });
@@ -129,7 +128,6 @@ function getPic_3(word, page_num) {
         setTimeout(function () { loading = false }, 1000);
     });
 }
-
 
 //图片来源04
 function getPic_4(word, page_num) {
@@ -182,6 +180,51 @@ function bigImg(that) {
     });
 }
 
+
+//图片来源05
+function getPic_5(word, page_num) {
+    loading = true
+    if (isNaN(page_num)) {
+        page_num = 1;
+    }
+    if (page_num <= 1) {
+        $(".content ul").html('');
+    }
+    page_num = (page_num - 1) * 100;
+    var append_html = ""
+    var url = "http://www.dbbqb.com/api/search/json?over=false&w=" + word + "&start=" + page_num;
+    $.get(url, function (data) {
+        append_html = "";
+        data.forEach(function (u) {
+            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='http://image.bee-ji.com/" + u.path + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
+        })
+        $(".content ul").append(append_html);
+        setTimeout(function () { loading = false }, 1000);
+    });
+}
+
+//图片来源06
+function getPic_6(word, page_num) {
+    loading = true
+    if (isNaN(page_num)) {
+        page_num = 1;
+    }
+    if (page_num <= 1) {
+        $(".content ul").html('');
+    }
+    var append_html = ""
+    var url = "https://m.b7.cn/e/sch/index.php?keyboard=" + word + "&page=" + page_num;
+    $.get(url, function (data) {
+        var urlArr = window.matchImgUrl_6(data);
+        append_html = "";
+        urlArr.forEach(function (u) {
+            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='https://m.b7.cn" + u + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
+        })
+        $(".content ul").append(append_html);
+        setTimeout(function () { loading = false }, 1000);
+    });
+}
+
 function hiddenBigImg() {
     $('.float_img').css({
         'display': 'none',
@@ -189,8 +232,7 @@ function hiddenBigImg() {
 }
 
 function buttonClick() {
-    // window.copyImg(tt.getElementsByTagName("img").item(0).src);
-    console.log(tt.src)
+    window.cleanTempImageCahce()
     window.copyImg(tt.src);
 }
 
@@ -207,24 +249,78 @@ function getSource() {
     }
 }
 
-function changeSource() {
+// function changeSource() {
+//     data = utools.db.get("doutuSourceNo");
+//     if (!data) {
+//         utools.db.put({
+//             _id: "doutuSourceNo",
+//             data: "2"
+//         });
+//         utools.showNotification("已切换至图源 02", clickFeatureCode = null, silent = false)
+//     } else {
+//         num = parseInt(data.data) + 1
+//         if (num > 4) {
+//             num = 1
+//         }
+//         utools.db.put({
+//             _id: "doutuSourceNo",
+//             data: num,
+//             _rev: data._rev
+//         });
+//         utools.showNotification("已切换至图源 0" + num + "（" + sourceArr[num] + "）", clickFeatureCode = null, silent = false)
+//     }
+// }
+
+function showChangeSourcePage() {
+    var lis = '';
+
+    data = utools.db.get("doutuSourceNo");
+    num = parseInt(data.data)
+
+    for (const val in sourceArr) {
+        if (num == val) {
+            lis = lis + "<li class='selected' onclick=\"setSource(" + val + ",this)\">" + sourceArr[val] + "</li>";
+        } else {
+            lis = lis + "<li onclick=\"setSource(" + val + ",this)\">" + sourceArr[val] + "</li>";
+        }
+    }
+
+    $(".changeSourcePage ul").html(lis);
+
+    $(".content").hide();
+    utools.setExpendHeight(500);
+    $(".changeSourcePage").show()
+    $(".changeSourcePage ul li").mouseover(function () {
+        $(this).siblings().css({ "background": "#eaeaea" })
+        $(this).siblings().css({ "border": "none" })
+        $(this).css({ "border": " 1px solid rgb(134, 132, 132)" })
+    });
+}
+
+function setSource(num, that) {
+    num = parseInt(num)
+    if (num > Object.keys(sourceArr).length) {
+        num = 1
+    } else if (num <= 0) {
+        num = 1
+    }
+
+
     data = utools.db.get("doutuSourceNo");
     if (!data) {
         utools.db.put({
             _id: "doutuSourceNo",
-            data: "2"
+            data: num
         });
-        utools.showNotification("已切换至图源 02", clickFeatureCode = null, silent = false)
     } else {
-        num = parseInt(data.data) + 1
-        if (num > 4) {
-            num = 1
-        }
         utools.db.put({
             _id: "doutuSourceNo",
             data: num,
             _rev: data._rev
         });
-        utools.showNotification("已切换至图源 0" + num + "（" + sourceArr[num] + "）", clickFeatureCode = null, silent = false)
     }
+    utools.showNotification("已切换至图源 0" + num + "（" + sourceArr[num] + "）", clickFeatureCode = null, silent = false)
+    $('.changeSourcePage ul li').css({ "border": "none", "background": "#eaeaea" })
+    $('.changeSourcePage ul li').removeClass("selected");
+    $(that).addClass("selected");
 }
