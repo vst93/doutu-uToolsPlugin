@@ -2,7 +2,7 @@
 
 方便查找斗图表情，回车搜索后，点击看中的就复制到剪切板了
 
-![UTOOLS1571132626401.png](http://yanxuan.nosdn.127.net/9cb772d7c4b07167cb8e47bd8be60a56.png)
+![KPpHQe.png](https://s2.ax1x.com/2019/10/15/KPpHQe.png)
 
 项目地址：https://github.com/vst93/utools-doutuPlugin
 
