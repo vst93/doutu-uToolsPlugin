@@ -10,7 +10,6 @@ const nativeImage = require('electron').nativeImage
 
 copyImg = imgUrl => {
     if (os.type() == 'Windows_NT') {
-
         // window 系统下载网络图片到 temp 目录，然后 以 html 写入clipboard
         var the_dir = utools.getPath('temp') + 'utoolsDoutuPlugin/';
         var path = the_dir + 'tempImage' + (new Date()).valueOf() + '.';
@@ -46,7 +45,6 @@ copyImg = imgUrl => {
                             clipboard.write({
                                 html: "<img src=\"" + path + "\" width=\"200\" alt=\"" + path + "\" >",
                             })
-                            console.log(path)
                         });
 
                     } else {
@@ -112,6 +110,48 @@ copyImg = imgUrl => {
 
             })
             .catch(console.error);
+    } else if (os.type() == 'Linux') {
+
+
+        var the_dir = utools.getPath('temp') + '/utoolsDoutuPlugin/';
+        var path = the_dir + 'tempImage' + (new Date()).valueOf() + '.';
+        //检查临时目录并创建
+        fs.exists(the_dir, function (exists) {
+            if (!exists) {
+                fs.mkdir(the_dir, err => {
+                })
+            }
+        });
+        fetch(imgUrl)
+            .then(respone => respone.blob())    // 将响应体转换成blob格式数据
+            .then(blob => {
+                let reader = new FileReader();
+                reader.readAsDataURL(blob);
+                reader.onloadend = function () {
+                    let base64Data = reader.result;
+                    var dataHeader = /^data:image\/(\w+);base64,/gim;
+                    var imageType = 'gif';
+                    while (re = dataHeader.exec(base64Data)) {
+                        imageType = re[1];
+                        break;
+                    }
+                    // 过滤data:URL
+                    base64Data = base64Data.replace(/^data:.+;base64,/, '');
+                    var dataBuffer = new Buffer.from(base64Data, 'base64');
+                    path = path + imageType;
+                    
+                    fs.writeFile(path, dataBuffer, err => {
+                        utools.copyFile(path)
+                    });
+
+                    utools.hideMainWindow()
+                };
+
+            })
+            .catch(console.error);
+
+
+
     } else {
         utools.showNotification('当前系统暂不支持', clickFeatureCode = null, silent = false)
     }
@@ -123,29 +163,35 @@ copyImg = imgUrl => {
  * 清理缓存的图片
  */
 cleanTempImageCahce = () => {
-    var theDir = utools.getPath('temp') + 'utoolsDoutuPlugin/';
-    let theFiles = [];
-    let files = fs.readdirSync(theDir);
-    files.forEach(function (item, index) {
-        let fPath = path.join(theDir, item);
-        let stat = fs.statSync(fPath);
-        if (stat.isFile() === true) {
-            theFiles.push(fPath);
-        }
-    });
-    if (theFiles.length >= 20) {
-        for (fiel_v of theFiles) {
-            fs.unlink(fiel_v, function (error) {
-                if (error) {
-                    console.log(error);
-                    return false;
-                }
-            })
-
-
-        }
+    if (os.type() == 'Linux') {
+        var theDir = utools.getPath('temp') + '/utoolsDoutuPlugin/';
+    } else {
+        var theDir = utools.getPath('temp') + 'utoolsDoutuPlugin/';
     }
 
+    fs.exists(theDir, function (exists) {
+        if (exists) {
+            let theFiles = [];
+            let files = fs.readdirSync(theDir);
+            files.forEach(function (item, index) {
+                let fPath = path.join(theDir, item);
+                let stat = fs.statSync(fPath);
+                if (stat.isFile() === true) {
+                    theFiles.push(fPath);
+                }
+            });
+            if (theFiles.length >= 20) {
+                for (fiel_v of theFiles) {
+                    fs.unlink(fiel_v, function (error) {
+                        if (error) {
+                            console.log(error);
+                            return false;
+                        }
+                    })
+                }
+            }
+        }
+    });
 
 }
 

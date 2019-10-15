@@ -18,6 +18,9 @@
 ##### 图源切换： 
 uTools下输入 `changeSource`
 
+##### 说明：
+linux下由于系统剪贴板限制，暂时统一以图片文件形式复制，导致部分软件中粘贴异常，目前deepin下，wine版本微信粘贴正常，wine版本QQ粘贴为图片文件。
+
 
 #### 下载地址：
 链接: https://pan.baidu.com/s/1ei0xyPb9GNaJ0RdPHcng0w 提取码: nm3b
@@ -42,3 +45,4 @@ uTools下输入 `changeSource`
 修复由于聊天软件锁定文件导致的图片某些情况复制失败
 添加图片文件缓存自动清理
 新加两个图源
+处理linux下复制问题
