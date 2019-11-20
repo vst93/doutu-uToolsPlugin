@@ -1,22 +1,17 @@
 {
 	"pluginName": "斗图",
 	"description": "斗图表情搜索插件",
-	"homepage": "https://github.com/vst93/utools-doutuPlugin",
+	"homepage": "https://github.com/vst93/doutu-uToolsPlugin",
 	"author": "vst",
 	"main": "index.html",
 	"logo": "logo.jpg",
-	"version": "0.2.5",
+	"version": "0.2.6",
 	"preload":"preload.js",
 	"features": [
 	    {
 			"code": "dt",
 			"explain": "斗图",
 	        "cmds":["斗图","doutu"]
-		},
-		{
-			"code": "changeSource",
-			"explain": "切换图源",
-	        "cmds":["切换图源","changeSource"]
-	    }
+		}
 	]
 }

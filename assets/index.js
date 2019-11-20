@@ -13,32 +13,32 @@ var sourceArr = {
 };
 
 utools.onPluginEnter(({ code, type, payload }) => {
-    if (code == 'changeSource') {
-        // changeSource();
-        showChangeSourcePage();
-    } else {
-        utools.setExpendHeight(0);
-        utools.setSubInput(({
-            text
-        }) => {
-            this.text = text
-            this.page = 1
-        }, "想搜点啥（搜索结果点击即可复制到剪切板）");
-    }
-
+    utools.setExpendHeight(0);
+    utools.setSubInput(({
+        text
+    }) => {
+        this.text = text
+        this.page = 1
+        if (text[text.length - 1] == ' ') {
+            text = text.replace(/(\s*$)/g,"");
+            this.text = text;
+            utools.setSubInputValue(text)
+            enterText();
+        }
+    }, "想搜点啥（搜索结果点击即可复制到剪切板）");
 });
 
 $(document).keydown(e => {
     switch (e.keyCode) {
         case 13:
-            utools.setExpendHeight(500);
-            $(".changeSourcePage").hide()
-            $(".content").show();
-            $(".content ul").html('');
-            getPic(text, 1)
+            enterText();
+            break;
+        case 32:
+            enterText();
             break;
     }
 });
+
 
 
 $(document).scroll(() => {
@@ -272,11 +272,12 @@ function getSource() {
 // }
 
 function showChangeSourcePage() {
+    hiddenBigImg();
+    $(".click-changeSourcePage").hide();
+    $(".click-content").show();
     var lis = '';
-
     data = utools.db.get("doutuSourceNo");
     num = parseInt(data.data)
-
     for (const val in sourceArr) {
         if (num == val) {
             lis = lis + "<li class='selected' onclick=\"setSource(" + val + ",this)\">" + sourceArr[val] + "</li>";
@@ -284,10 +285,8 @@ function showChangeSourcePage() {
             lis = lis + "<li onclick=\"setSource(" + val + ",this)\">" + sourceArr[val] + "</li>";
         }
     }
-
     $(".changeSourcePage ul").html(lis);
-
-    $(".content").hide();
+    // $(".content").hide();
     utools.setExpendHeight(500);
     $(".changeSourcePage").show()
     $(".changeSourcePage ul li").mouseover(function () {
@@ -323,4 +322,19 @@ function setSource(num, that) {
     $('.changeSourcePage ul li').css({ "border": "none", "background": "#eaeaea" })
     $('.changeSourcePage ul li').removeClass("selected");
     $(that).addClass("selected");
+}
+
+function enterText() {
+    utools.setExpendHeight(500);
+    $(".changeSourcePage").hide()
+    $(".content").show();
+    $(".click-changeSourcePage").show();
+    $(".content ul").html('');
+    getPic(text, 1)
+}
+
+function backContent(){
+    $(".click-content").hide();
+    $(".changeSourcePage").hide()
+    $(".click-changeSourcePage").show();
 }

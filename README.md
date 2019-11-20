@@ -2,9 +2,9 @@
 
 方便查找斗图表情，回车搜索后，点击看中的就复制到剪切板了
 
-![KPpHQe.png](https://s2.ax1x.com/2019/10/15/KPpHQe.png)
+![UTOOLS1574279355889.png](https://i.loli.net/2019/11/21/jxQCGPzUyu9A6HB.png)
 
-项目地址：https://github.com/vst93/utools-doutuPlugin
+项目地址：https://github.com/vst93/doutu-uToolsPlugin
 
 ##### 数据来源：
 ```
@@ -16,16 +16,21 @@
 图源 06 ：https://b7.cn/
 ```
 ##### 图源切换： 
-uTools下输入 `changeSource`
+点击右下方设置按钮
 
 ##### 说明：
 linux下由于系统剪贴板限制，暂时统一以图片文件形式复制，导致部分软件中粘贴异常，目前deepin下，wine版本微信粘贴正常，wine版本QQ粘贴为图片文件。
+
+win10下微信与QQ粘贴正常，TIM目前只能复制静态图片。
 
 
 #### 下载地址：
 链接: https://pan.baidu.com/s/1ei0xyPb9GNaJ0RdPHcng0w 提取码: nm3b
 
-### 更新
+#### 反馈：
+https://yuanliao.info/d/438
+
+### 更新记录
 `v0.1.2`
 修改图片来源
 
@@ -46,3 +51,8 @@ linux下由于系统剪贴板限制，暂时统一以图片文件形式复制，
 添加图片文件缓存自动清理
 新加两个图源
 处理linux下复制问题
+
+`v0.2.6`
+优化“切换图源”页面入口
+页面与图标优化
+

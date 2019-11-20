@@ -57,8 +57,6 @@ copyImg = imgUrl => {
             })
             .catch(console.error);
 
-
-
     } else if (os.type() == 'Darwin') {
         // mac 系统下载网络图片到 temp 目录，然后以 NSFilenamesPboardType 的 Buffer 写入clipboard
         var the_dir = utools.getPath('temp') + 'utoolsDoutuPlugin/';
@@ -111,8 +109,6 @@ copyImg = imgUrl => {
             })
             .catch(console.error);
     } else if (os.type() == 'Linux') {
-
-
         var the_dir = utools.getPath('temp') + '/utoolsDoutuPlugin/';
         var path = the_dir + 'tempImage' + (new Date()).valueOf() + '.';
         //检查临时目录并创建

@@ -59,4 +59,36 @@ body{
     background: #adabab !important;
 }
 
+.click-changeSourcePage{
+    background-image: url(set-button.png);
+    width: 40px;
+    height: 40px;
+    z-index: 99;
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: fixed;
+    right: 0px; 
+    bottom: 0px;
+    opacity: 0.5;
+    cursor: pointer;
+}
 
+.click-changeSourcePage:hover,.click-content:hover{
+    opacity: 1;
+    background-size: 40px 40px;
+}
+.click-content{
+    background-image: url(set-back.png);
+    width: 40px;
+    height: 40px;
+    z-index: 99;
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: fixed;
+    right: 0px; 
+    bottom: 0px;
+    opacity: 0.5;
+    cursor: pointer;
+}
