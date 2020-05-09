@@ -9,18 +9,21 @@ var sourceArr = {
     '3': '搜狗图片 https://pic.sogou.com',
     '4': '发表情 https://fabiaoqing.com',
     '5': '逗比拯救世界 http://www.dbbqb.com',
-    '6': 'B7表情 https://b7.cn',
+    '6': '爱斗图 http://www.adoutu.com',
+    '7': 'DIY斗图 https://www.diydoutu.com',
+    '8': '表情集室 http://emoji.adesk.com',
 };
 
 utools.onPluginEnter(({ code, type, payload }) => {
-    utools.setExpendHeight(0);
+    recommendPic()
+    // utools.setExpendHeight(0);
     utools.setSubInput(({
         text
     }) => {
         this.text = text
         this.page = 1
         if (text[text.length - 1] == ' ') {
-            text = text.replace(/(\s*$)/g,"");
+            text = text.replace(/(\s*$)/g, "");
             this.text = text;
             utools.setSubInputValue(text)
             enterText();
@@ -39,6 +42,19 @@ $(document).keydown(e => {
     }
 });
 
+$(function(){
+    $(".float_img").on('mousedown',function(e){
+        console.log(e)
+        window.cleanTempImageCahce()
+         //右键为3
+         if (3 == e.which) {
+            utools.shellOpenExternal(tt.src)
+        } else if (1 == e.which) {
+            //左键为1
+            window.copyImg(tt.src);
+        }
+    })
+})
 
 
 $(document).scroll(() => {
@@ -213,12 +229,84 @@ function getPic_6(word, page_num) {
         $(".content ul").html('');
     }
     var append_html = ""
-    var url = "https://m.b7.cn/e/sch/index.php?keyboard=" + word + "&page=" + page_num;
+    var url = "http://www.adoutu.com/search?type=1&keyword=" + word + "&page=" + page_num;
     $.get(url, function (data) {
         var urlArr = window.matchImgUrl_6(data);
+        console.log(urlArr)
         append_html = "";
         urlArr.forEach(function (u) {
-            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='https://m.b7.cn" + u + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
+            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
+        })
+        $(".content ul").append(append_html);
+        setTimeout(function () { loading = false }, 1000);
+    });
+}
+
+//图片来源07
+function getPic_7(word, page_num) {
+    loading = true
+    if (isNaN(page_num)) {
+        page_num = 1;
+    }
+    if (page_num <= 1) {
+        $(".content ul").html('');
+    }
+    page_num = (page_num - 1) * 100;
+    var append_html = ""
+    var url = "https://www.diydoutu.com/api/" + encodeURI(word) + "?start=" + page_num;
+    $.get(url, function (data) {
+        append_html = "";
+        data.forEach(function (u) {
+            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u.picUrl + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
+        })
+        $(".content ul").append(append_html);
+        setTimeout(function () { loading = false }, 1000);
+    });
+}
+
+//图片来源08
+function getPic_8(word, page_num) {
+    loading = true
+    if (isNaN(page_num)) {
+        page_num = 1;
+    }
+    if (page_num <= 1) {
+        $(".content ul").html('');
+    }
+    page_num = (page_num - 1) * 100;
+    var append_html = ""
+    var url = "http://so.picasso.adesk.com/emoji/v1/resource?from=select&limit=100&order=new&keyword=" + encodeURI(word) + "&skip=" + page_num;
+    $.get(url, function (data) {
+        append_html = "";
+        data = data.res.data
+        data.forEach(function (u) {
+            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u.small_url + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
+        })
+        $(".content ul").append(append_html);
+        setTimeout(function () { loading = false }, 1000);
+    });
+}
+
+//推荐列表
+function recommendPic() {
+    page_num = 1
+    console.log("recommendPic:" + page_num)
+    loading = true
+    if (isNaN(page_num)) {
+        page_num = 1;
+    }
+    if (page_num <= 1) {
+        $(".content ul").html('');
+    }
+    page_num = (page_num - 1) * 100;
+    var append_html = ""
+    var url = "http://emoji.adesk.com/v1/resource?limit=100&skip=" + page_num;
+    $.get(url, function (data) {
+        data = JSON.parse(data)
+        append_html = "";
+        data = data.res.data
+        data.forEach(function (u) {
+            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u.small_url + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
         })
         $(".content ul").append(append_html);
         setTimeout(function () { loading = false }, 1000);
@@ -231,11 +319,7 @@ function hiddenBigImg() {
     });
 }
 
-function buttonClick() {
-    window.cleanTempImageCahce()
-    window.copyImg(tt.src);
-}
-
+//获取当前源id
 function getSource() {
     data = utools.db.get("doutuSourceNo");
     if (!data) {
@@ -333,7 +417,7 @@ function enterText() {
     getPic(text, 1)
 }
 
-function backContent(){
+function backContent() {
     $(".click-content").hide();
     $(".changeSourcePage").hide()
     $(".click-changeSourcePage").show();

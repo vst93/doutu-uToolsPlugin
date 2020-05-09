@@ -203,12 +203,12 @@ matchImgUrl = str => {
 
 
 matchImgUrl_6 = str => {
-    var reg = /<div\Wclass="colguangchang"><a.*src="(.*)"><span/gim;
+    // var reg = /<a\Wclass="col-sm-3".*<img\Wsrc="(.*)"\Wtitle=/gim;
+    var reg = /img src="(.*)" title/gim;
     var res = []
     while (re = reg.exec(str)) {
         res.push(re[1])
     }
     return res;
 }
-
 
