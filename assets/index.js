@@ -15,6 +15,11 @@ var sourceArr = {
 };
 
 utools.onPluginEnter(({ code, type, payload }) => {
+    if (utools.isDarkColors()) {
+        $(document.body).addClass('dark-mode');
+    } else {
+        $(document.body).removeClass('dark-mode');
+    }
     recommendPic()
     // utools.setExpendHeight(0);
     utools.setSubInput(({
@@ -42,12 +47,12 @@ $(document).keydown(e => {
     }
 });
 
-$(function(){
-    $(".float_img").on('mousedown',function(e){
+$(function () {
+    $(".float_img").on('mousedown', function (e) {
         console.log(e)
         window.cleanTempImageCahce()
-         //右键为3
-         if (3 == e.which) {
+        //右键为3
+        if (3 == e.which) {
             utools.shellOpenExternal(tt.src)
         } else if (1 == e.which) {
             //左键为1
