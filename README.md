@@ -10,14 +10,15 @@
 ##### 数据来源：
 
 - 图源 01（默认，推荐）：https://www.52doutu.cn
-- 图源 02（原默认）：https://www.doutula.com/
+- ~~图源 02（原默认）：https://www.doutula.com~~
+- 图源 02 ：https://dou.yuanmazg.com
 - 图源 03（不推荐）：https://pic.sogou.com
 - 图源 04 ：https://fabiaoqing.com
 - 图源 05 ：http://www.dbbqb.com
 - ~~图源 06 ：https://b7.cn/~~
 - 图源 06 ：http://www.adoutu.com
 - 图源 07 ：https://www.diydoutu.com
-- 图源 08 ：http://emoji.adesk.com
+- ~~图源 08 ：http://emoji.adesk.com~~
 
 
 ##### 图源切换： 
@@ -71,3 +72,5 @@
 `v0.2.8`
 - 优化黑暗模式下的界面
 
+`v0.2.9`
+- 修复替换部分失效图源
