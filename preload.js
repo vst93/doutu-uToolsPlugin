@@ -212,3 +212,15 @@ matchImgUrl_6 = str => {
     return res;
 }
 
+
+matchImgUrl_7 = str => {
+    // var reg = /<a\Wclass="col-sm-3".*<img\Wsrc="(.*)"\Wtitle=/gim;
+    console.log(str)
+    var reg = /data-src="(.*)" alt/gim;
+    var res = []
+    while (re = reg.exec(str)) {
+        res.push(re[1])
+    }
+    return res;
+}
+

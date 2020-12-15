@@ -4,14 +4,14 @@ var loading = false
 var tt = false
 
 var sourceArr = {
-    '1': '我爱斗图 https://www.52doutu.cn',
-    '2': '斗图啦 https://www.doutula.com',
-    '3': '搜狗图片 https://pic.sogou.com',
-    '4': '发表情 https://fabiaoqing.com',
-    '5': '逗比拯救世界 http://www.dbbqb.com',
-    '6': '爱斗图 http://www.adoutu.com',
-    '7': 'DIY斗图 https://www.diydoutu.com',
-    '8': '表情集室 http://emoji.adesk.com',
+    '1': '1) 我爱斗图 https://www.52doutu.cn',
+    '2': '2) 斗图啦 https://dou.yuanmazg.com',
+    '3': '3) 搜狗图片 https://pic.sogou.com',
+    '4': '4) 发表情 https://fabiaoqing.com',
+    '5': '5) 逗比拯救世界 http://www.dbbqb.com',
+    '6': '6) 爱斗图 http://www.adoutu.com',
+    '7': '7) DIY斗图 https://www.diydoutu.com',
+    // '8': '8) 表情集室 http://emoji.adesk.com',
 };
 
 utools.onPluginEnter(({ code, type, payload }) => {
@@ -97,7 +97,7 @@ function getPic_1(word, page_num) {
         $(".content ul").html('');
     }
     var append_html = ""
-    var url = "https://www.52doutu.cn/api/?types=search&action=searchpic&limit=20&wd=" + word + "&offset=" + page_num;
+    var url = "https://www.52doutu.cn/api/?types=search&action=searchpic&limit=60&wd=" + word + "&offset=" + (page_num-1);
     $.get(url, function (data) {
         append_html = "";
         data.rows.forEach(function (u) {
@@ -109,7 +109,7 @@ function getPic_1(word, page_num) {
 }
 
 //图片来源02
-function getPic_2(word, page_num) {
+function getPic_2_bak(word, page_num) {
     loading = true
     if (isNaN(page_num)) {
         page_num = 1;
@@ -124,6 +124,26 @@ function getPic_2(word, page_num) {
         append_html = "";
         urlArr.forEach(function (u) {
             append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
+        })
+        $(".content ul").append(append_html);
+        setTimeout(function () { loading = false }, 1000);
+    });
+}
+function getPic_2(word, page_num) {
+    loading = true
+    if (isNaN(page_num)) {
+        page_num = 1;
+    }
+    if (page_num <= 1) {
+        $(".content ul").html('');
+    }
+    var append_html = ""
+    var url = "https://dou.yuanmazg.com/so?keyword=" + word + "&page=" + page_num;
+    $.get(url, function (data) {
+        var urlArr = window.matchImgUrl(data);
+        append_html = "";
+        urlArr.forEach(function (u) {
+            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='https://dou.yuanmazg.com/" + u + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
         })
         $(".content ul").append(append_html);
         setTimeout(function () { loading = false }, 1000);
@@ -217,7 +237,7 @@ function getPic_5(word, page_num) {
     $.get(url, function (data) {
         append_html = "";
         data.forEach(function (u) {
-            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='http://image.bee-ji.com/" + u.path + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
+            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='http://image.dbbqb.com/" + u.path + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
         })
         $(".content ul").append(append_html);
         setTimeout(function () { loading = false }, 1000);
@@ -256,13 +276,15 @@ function getPic_7(word, page_num) {
     if (page_num <= 1) {
         $(".content ul").html('');
     }
-    page_num = (page_num - 1) * 100;
+    page_num = (page_num);
     var append_html = ""
-    var url = "https://www.diydoutu.com/api/" + encodeURI(word) + "?start=" + page_num;
+    var url = "https://www.diydoutu.com/tag/" + encodeURI(word) + "?page=" + page_num;
     $.get(url, function (data) {
+        var urlArr = window.matchImgUrl_7(data);
         append_html = "";
-        data.forEach(function (u) {
-            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u.picUrl + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
+        console.log(urlArr)
+        urlArr.forEach(function (u) {
+            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
         })
         $(".content ul").append(append_html);
         setTimeout(function () { loading = false }, 1000);
