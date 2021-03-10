@@ -315,7 +315,7 @@ function getPic_8(word, page_num) {
 }
 
 //推荐列表
-function recommendPic() {
+function recommendPicBak() {
     page_num = 1
     console.log("recommendPic:" + page_num)
     loading = true
@@ -338,6 +338,28 @@ function recommendPic() {
         $(".content ul").append(append_html);
         setTimeout(function () { loading = false }, 1000);
     });
+}
+function recommendPic() {
+    page_num = 1
+    loading = true
+    if (isNaN(page_num)) {
+        page_num = 1;
+    }
+    if (page_num <= 1) {
+        $(".content ul").html('');
+    }
+    page_num = (page_num - 1) * 100;
+    var append_html = ""
+    var url = "https://www.dbbqb.com/api/search/json?size=60";
+    $.get(url, function (data) {
+        append_html = "";
+        data.forEach(function (u) {
+            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='http://image.dbbqb.com/" + u.path + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
+        })
+        $(".content ul").append(append_html);
+        setTimeout(function () { loading = false }, 1000);
+    });
+
 }
 
 function hiddenBigImg() {
