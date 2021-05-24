@@ -1,6 +1,6 @@
 # doutu-uToolsPlugin 斗图插件
 
-方便查找斗图表情，回车搜索后，左键点击看中的就复制到剪切板了，右键点击可在浏览器中打开图片（方便无法自动复制粘贴情况下的使用）
+方便查找斗图表情，回车搜索后，左键点击看中的就复制到剪切板了，**右键** 点击可在浏览器中打开图片（方便无法自动复制粘贴情况下的使用）
 
 
 ![UTOOLS1574279355889.png](https://i.loli.net/2019/11/21/jxQCGPzUyu9A6HB.png)
@@ -9,20 +9,20 @@
 
 ##### 数据来源：
 
-- 图源 01（默认，推荐）：https://www.52doutu.cn
-- ~~图源 02（原默认）：https://www.doutula.com~~
-- 图源 02 ：https://dou.yuanmazg.com
+- 图源 01 ：https://www.52doutu.cn
+- 图源 02（默认）：http://www.doutula.com
 - 图源 03（不推荐）：https://pic.sogou.com
 - 图源 04 ：https://fabiaoqing.com
 - 图源 05 ：http://www.dbbqb.com
 - ~~图源 06 ：https://b7.cn/~~
 - 图源 06 ：http://www.adoutu.com
 - 图源 07 ：https://www.diydoutu.com
-- ~~图源 08 ：http://emoji.adesk.com~~
+- 图源 08 ：http://emoji.adesk.com
+- 图源 09 ：https://dou.yuanmazg.com
 
 
 ##### 图源切换： 
-- 点击右下方设置按钮
+- 点击右下方设置按钮 **（部分图源在一些地区访问过慢或失效，请尝试切换图源）**
 
 
 ##### 说明：
@@ -77,3 +77,7 @@
 
 `v0.2.10`
 - 替换首页推荐图片
+
+`v0.2.20` *(2021-05-24)*
+- 图源维护
+- 添加接口或网络异常时的提醒，添加无图时的提示
