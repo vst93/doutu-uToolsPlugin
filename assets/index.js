@@ -5,13 +5,14 @@ var tt = false
 
 var sourceArr = {
     '1': '1) 我爱斗图 https://www.52doutu.cn',
-    '2': '2) 斗图啦 https://dou.yuanmazg.com',
+    '2': '2) 斗图啦 http://www.doutula.com',
     '3': '3) 搜狗图片 https://pic.sogou.com',
     '4': '4) 发表情 https://fabiaoqing.com',
     '5': '5) 逗比拯救世界 http://www.dbbqb.com',
     '6': '6) 爱斗图 http://www.adoutu.com',
     '7': '7) DIY斗图 https://www.diydoutu.com',
-    // '8': '8) 表情集室 http://emoji.adesk.com',
+    '8': '8) 表情集室 http://emoji.adesk.com',
+    '9': '9) 逗图网 https://dou.yuanmazg.com',
 };
 
 utools.onPluginEnter(({ code, type, payload }) => {
@@ -49,7 +50,7 @@ $(document).keydown(e => {
 
 $(function () {
     $(".float_img").on('mousedown', function (e) {
-        console.log(e)
+        // console.log(e)
         window.cleanTempImageCahce()
         //右键为3
         if (3 == e.which) {
@@ -82,9 +83,9 @@ $(document).scroll(() => {
 
 
 function getPic(word, page_num) {
+    $('body').css('background-image','none')
     num = getSource()
     eval("getPic_" + num + "(word,page_num)");
-    // (getPic+num)(word,page_num);
 }
 
 //图片来源01
@@ -97,19 +98,21 @@ function getPic_1(word, page_num) {
         $(".content ul").html('');
     }
     var append_html = ""
-    var url = "https://www.52doutu.cn/api/?types=search&action=searchpic&limit=60&wd=" + word + "&offset=" + (page_num-1);
+    var url = "http://www.52doutu.cn/api/?types=search&action=searchpic&limit=60&wd=" + word + "&offset=" + (page_num - 1);
     $.get(url, function (data) {
         append_html = "";
         data.rows.forEach(function (u) {
             append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u.url + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
         })
         $(".content ul").append(append_html);
-        setTimeout(function () { loading = false }, 1000);
+        setTimeout(function () { getPicThen() }, 1000);
+    }).fail(function(){
+        getPicError()
     });
 }
 
 //图片来源02
-function getPic_2_bak(word, page_num) {
+function getPic_2(word, page_num) {
     loading = true
     if (isNaN(page_num)) {
         page_num = 1;
@@ -126,27 +129,9 @@ function getPic_2_bak(word, page_num) {
             append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
         })
         $(".content ul").append(append_html);
-        setTimeout(function () { loading = false }, 1000);
-    });
-}
-function getPic_2(word, page_num) {
-    loading = true
-    if (isNaN(page_num)) {
-        page_num = 1;
-    }
-    if (page_num <= 1) {
-        $(".content ul").html('');
-    }
-    var append_html = ""
-    var url = "https://dou.yuanmazg.com/so?keyword=" + word + "&page=" + page_num;
-    $.get(url, function (data) {
-        var urlArr = window.matchImgUrl(data);
-        append_html = "";
-        urlArr.forEach(function (u) {
-            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='https://dou.yuanmazg.com/" + u + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
-        })
-        $(".content ul").append(append_html);
-        setTimeout(function () { loading = false }, 1000);
+        setTimeout(function () {  getPicThen() }, 1000);
+    }).fail(function(){
+        getPicError()
     });
 }
 
@@ -166,8 +151,10 @@ function getPic_3(word, page_num) {
             append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + item.picUrl + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
         });
         $(".content ul").append(append_html);
-        setTimeout(function () { loading = false }, 1000);
-    });
+        setTimeout(function () {  getPicThen() }, 1000);
+    }).error(function() { 
+        getPicError()
+    })
 }
 
 //图片来源04
@@ -191,7 +178,9 @@ function getPic_4(word, page_num) {
         //      append_html  += "<li><img onmouseenter=\"bigImg(this)\" src='"+item.picUrl+"' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
         //   });
         $(".content ul").append(append_html);
-        setTimeout(function () { loading = false }, 1000);
+        setTimeout(function () {  getPicThen() }, 1000);
+    }).fail(function(){
+        getPicError()
     });
 }
 
@@ -240,7 +229,9 @@ function getPic_5(word, page_num) {
             append_html += "<li><img onmouseenter=\"bigImg(this)\" src='http://image.dbbqb.com/" + u.path + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
         })
         $(".content ul").append(append_html);
-        setTimeout(function () { loading = false }, 1000);
+        setTimeout(function () {  getPicThen() }, 1000);
+    }).fail(function(){
+        getPicError()
     });
 }
 
@@ -257,13 +248,15 @@ function getPic_6(word, page_num) {
     var url = "http://www.adoutu.com/search?type=1&keyword=" + word + "&page=" + page_num;
     $.get(url, function (data) {
         var urlArr = window.matchImgUrl_6(data);
-        console.log(urlArr)
+        // console.log(urlArr)
         append_html = "";
         urlArr.forEach(function (u) {
             append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
         })
         $(".content ul").append(append_html);
-        setTimeout(function () { loading = false }, 1000);
+        setTimeout(function () {  getPicThen() }, 1000);
+    }).fail(function(){
+        getPicError()
     });
 }
 
@@ -282,12 +275,14 @@ function getPic_7(word, page_num) {
     $.get(url, function (data) {
         var urlArr = window.matchImgUrl_7(data);
         append_html = "";
-        console.log(urlArr)
+        // console.log(urlArr)
         urlArr.forEach(function (u) {
             append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
         })
         $(".content ul").append(append_html);
-        setTimeout(function () { loading = false }, 1000);
+        setTimeout(function () {  getPicThen() }, 1000);
+    }).fail(function(){
+        getPicError()
     });
 }
 
@@ -310,14 +305,39 @@ function getPic_8(word, page_num) {
             append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u.small_url + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
         })
         $(".content ul").append(append_html);
-        setTimeout(function () { loading = false }, 1000);
+        setTimeout(function () { getPicThen() }, 1000);
+    }).fail(function(){
+        getPicError()
+    });
+}
+
+function getPic_9(word, page_num) {
+    loading = true
+    if (isNaN(page_num)) {
+        page_num = 1;
+    }
+    if (page_num <= 1) {
+        $(".content ul").html('');
+    }
+    var append_html = ""
+    var url = "https://dou.yuanmazg.com/so?keyword=" + word + "&page=" + page_num;
+    $.get(url, function (data) {
+        var urlArr = window.matchImgUrl(data);
+        append_html = "";
+        urlArr.forEach(function (u) {
+            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='https://dou.yuanmazg.com/" + u + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
+        })
+        $(".content ul").append(append_html);
+        setTimeout(function () {  getPicThen() }, 1000);
+    }).fail(function(){
+        getPicError()
     });
 }
 
 //推荐列表
 function recommendPicBak() {
     page_num = 1
-    console.log("recommendPic:" + page_num)
+    // console.log("recommendPic:" + page_num)
     loading = true
     if (isNaN(page_num)) {
         page_num = 1;
@@ -336,7 +356,7 @@ function recommendPicBak() {
             append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u.small_url + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
         })
         $(".content ul").append(append_html);
-        setTimeout(function () { loading = false }, 1000);
+        setTimeout(function () { getPicThen() }, 1000);
     });
 }
 function recommendPic() {
@@ -357,7 +377,7 @@ function recommendPic() {
             append_html += "<li><img onmouseenter=\"bigImg(this)\" src='http://image.dbbqb.com/" + u.path + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
         })
         $(".content ul").append(append_html);
-        setTimeout(function () { loading = false }, 1000);
+        setTimeout(function () { getPicThen() }, 1000);
     });
 
 }
@@ -374,35 +394,13 @@ function getSource() {
     if (!data) {
         utools.db.put({
             _id: "doutuSourceNo",
-            data: "1"
+            data: "2"
         });
-        return "1";
+        return "2";
     } else {
         return data.data;
     }
 }
-
-// function changeSource() {
-//     data = utools.db.get("doutuSourceNo");
-//     if (!data) {
-//         utools.db.put({
-//             _id: "doutuSourceNo",
-//             data: "2"
-//         });
-//         utools.showNotification("已切换至图源 02", clickFeatureCode = null, silent = false)
-//     } else {
-//         num = parseInt(data.data) + 1
-//         if (num > 4) {
-//             num = 1
-//         }
-//         utools.db.put({
-//             _id: "doutuSourceNo",
-//             data: num,
-//             _rev: data._rev
-//         });
-//         utools.showNotification("已切换至图源 0" + num + "（" + sourceArr[num] + "）", clickFeatureCode = null, silent = false)
-//     }
-// }
 
 function showChangeSourcePage() {
     hiddenBigImg();
@@ -451,7 +449,7 @@ function setSource(num, that) {
             _rev: data._rev
         });
     }
-    utools.showNotification("已切换至图源 0" + num + "（" + sourceArr[num] + "）", clickFeatureCode = null, silent = false)
+    utools.showNotification("已切换至图源 0" + num + "【" + sourceArr[num] + "】", clickFeatureCode = null, silent = false)
     $('.changeSourcePage ul li').css({ "border": "none", "background": "#eaeaea" })
     $('.changeSourcePage ul li').removeClass("selected");
     $(that).addClass("selected");
@@ -470,4 +468,15 @@ function backContent() {
     $(".click-content").hide();
     $(".changeSourcePage").hide()
     $(".click-changeSourcePage").show();
+}
+
+function getPicThen(){
+    loading = false;
+    if($(".content ul").html()===""){
+        $('body').css('background','url(assets/empty.png) no-repeat center')
+    }
+}
+
+function getPicError(){
+    utools.showNotification("当前图源访问异常【"+sourceArr[getSource()]+"】，请切换图源或检查网络状态", clickFeatureCode = null, silent = false)
 }

@@ -1,6 +1,10 @@
+
 body{
     margin: 0;
     width: 720px;
+    min-height: 80vh;
+    background: url(assets/empty.png) no-repeat center;
+    background-size: 30% !important;
 }
 .content{
     width: 100%;
@@ -116,4 +120,9 @@ body .line-div{
     height: 0px;
     border: 0;
     border-top: #d28641 solid 1px;
+}
+
+.empty-bg{
+    background: url(assets/empty.png) no-repeat center;
+    background-size: 30%;
 }
