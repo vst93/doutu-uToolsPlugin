@@ -8,7 +8,7 @@ const fs = require('fs');
 const os = require('os');
 const nativeImage = require('electron').nativeImage
 
-copyImg = imgUrl => {
+copyImg = (imgUrl, ctrlV) => {
     if (os.type() == 'Windows_NT') {
         // window 系统下载网络图片到 temp 目录，然后 以 html 写入clipboard
         var the_dir = utools.getPath('temp') + 'utoolsDoutuPlugin/';
@@ -52,6 +52,10 @@ copyImg = imgUrl => {
                     }
 
                     utools.hideMainWindow()
+
+                    if (ctrlV == true) {
+                        utools.simulateKeyboardTap('v', utools.isMacOs() ? 'command' : 'ctrl')
+                    }
                 };
 
             })
@@ -104,6 +108,9 @@ copyImg = imgUrl => {
                         )
                     });
                     utools.hideMainWindow()
+                    if (ctrlV == true) {
+                        utools.simulateKeyboardTap('v', utools.isMacOs() ? 'command' : 'ctrl')
+                    }
                 };
 
             })
@@ -135,12 +142,15 @@ copyImg = imgUrl => {
                     base64Data = base64Data.replace(/^data:.+;base64,/, '');
                     var dataBuffer = new Buffer.from(base64Data, 'base64');
                     path = path + imageType;
-                    
+
                     fs.writeFile(path, dataBuffer, err => {
                         utools.copyFile(path)
                     });
 
                     utools.hideMainWindow()
+                    if (ctrlV == true) {
+                        utools.simulateKeyboardTap('v', utools.isMacOs() ? 'command' : 'ctrl')
+                    }
                 };
 
             })
@@ -151,7 +161,7 @@ copyImg = imgUrl => {
     } else {
         utools.showNotification('当前系统暂不支持', clickFeatureCode = null, silent = false)
     }
-
+    
 }
 
 

@@ -49,15 +49,24 @@ $(document).keydown(e => {
 });
 
 $(function () {
-    $(".float_img").on('mousedown', function (e) {
-        // console.log(e)
+    clickSta = null
+    $(".float_img").on('mouseup', function (e) {
         window.cleanTempImageCahce()
         //右键为3
         if (3 == e.which) {
             utools.shellOpenExternal(tt.src)
-        } else if (1 == e.which) {
-            //左键为1
-            window.copyImg(tt.src);
+        } else if (1 == e.which) {   //左键为1
+            if (clickSta == null) {
+                clickSta = setInterval(function () {
+                    window.copyImg(tt.src,false)
+                    clearTimeout(clickSta)
+                    clickSta = null
+                }, 300)
+            } else {
+                clearTimeout(clickSta)
+                clickSta = null
+                window.copyImg(tt.src,true)
+            }
         }
     })
 })
@@ -83,7 +92,7 @@ $(document).scroll(() => {
 
 
 function getPic(word, page_num) {
-    $('body').css('background-image','none')
+    $('body').css('background-image', 'none')
     num = getSource()
     eval("getPic_" + num + "(word,page_num)");
 }
@@ -106,7 +115,7 @@ function getPic_1(word, page_num) {
         })
         $(".content ul").append(append_html);
         setTimeout(function () { getPicThen() }, 1000);
-    }).fail(function(){
+    }).fail(function () {
         getPicError()
     });
 }
@@ -129,8 +138,8 @@ function getPic_2(word, page_num) {
             append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
         })
         $(".content ul").append(append_html);
-        setTimeout(function () {  getPicThen() }, 1000);
-    }).fail(function(){
+        setTimeout(function () { getPicThen() }, 1000);
+    }).fail(function () {
         getPicError()
     });
 }
@@ -151,8 +160,8 @@ function getPic_3(word, page_num) {
             append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + item.picUrl + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
         });
         $(".content ul").append(append_html);
-        setTimeout(function () {  getPicThen() }, 1000);
-    }).error(function() { 
+        setTimeout(function () { getPicThen() }, 1000);
+    }).error(function () {
         getPicError()
     })
 }
@@ -178,8 +187,8 @@ function getPic_4(word, page_num) {
         //      append_html  += "<li><img onmouseenter=\"bigImg(this)\" src='"+item.picUrl+"' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
         //   });
         $(".content ul").append(append_html);
-        setTimeout(function () {  getPicThen() }, 1000);
-    }).fail(function(){
+        setTimeout(function () { getPicThen() }, 1000);
+    }).fail(function () {
         getPicError()
     });
 }
@@ -229,8 +238,8 @@ function getPic_5(word, page_num) {
             append_html += "<li><img onmouseenter=\"bigImg(this)\" src='http://image.dbbqb.com/" + u.path + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
         })
         $(".content ul").append(append_html);
-        setTimeout(function () {  getPicThen() }, 1000);
-    }).fail(function(){
+        setTimeout(function () { getPicThen() }, 1000);
+    }).fail(function () {
         getPicError()
     });
 }
@@ -254,8 +263,8 @@ function getPic_6(word, page_num) {
             append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
         })
         $(".content ul").append(append_html);
-        setTimeout(function () {  getPicThen() }, 1000);
-    }).fail(function(){
+        setTimeout(function () { getPicThen() }, 1000);
+    }).fail(function () {
         getPicError()
     });
 }
@@ -280,8 +289,8 @@ function getPic_7(word, page_num) {
             append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
         })
         $(".content ul").append(append_html);
-        setTimeout(function () {  getPicThen() }, 1000);
-    }).fail(function(){
+        setTimeout(function () { getPicThen() }, 1000);
+    }).fail(function () {
         getPicError()
     });
 }
@@ -306,7 +315,7 @@ function getPic_8(word, page_num) {
         })
         $(".content ul").append(append_html);
         setTimeout(function () { getPicThen() }, 1000);
-    }).fail(function(){
+    }).fail(function () {
         getPicError()
     });
 }
@@ -328,8 +337,8 @@ function getPic_9(word, page_num) {
             append_html += "<li><img onmouseenter=\"bigImg(this)\" src='https://dou.yuanmazg.com/" + u + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
         })
         $(".content ul").append(append_html);
-        setTimeout(function () {  getPicThen() }, 1000);
-    }).fail(function(){
+        setTimeout(function () { getPicThen() }, 1000);
+    }).fail(function () {
         getPicError()
     });
 }
@@ -470,13 +479,13 @@ function backContent() {
     $(".click-changeSourcePage").show();
 }
 
-function getPicThen(){
+function getPicThen() {
     loading = false;
-    if($(".content ul").html()===""){
-        $('body').css('background','url(assets/empty.png) no-repeat center')
+    if ($(".content ul").html() === "") {
+        $('body').css('background', 'url(assets/empty.png) no-repeat center')
     }
 }
 
-function getPicError(){
-    utools.showNotification("当前图源访问异常【"+sourceArr[getSource()]+"】，请切换图源或检查网络状态", clickFeatureCode = null, silent = false)
+function getPicError() {
+    utools.showNotification("当前图源访问异常【" + sourceArr[getSource()] + "】，请切换图源或检查网络状态", clickFeatureCode = null, silent = false)
 }
