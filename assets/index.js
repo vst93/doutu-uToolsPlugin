@@ -4,15 +4,14 @@ var loading = false
 var tt = false
 
 var sourceArr = {
-    '1': '1) 我爱斗图 https://www.52doutu.cn',
-    '2': '2) 斗图啦 http://www.doutula.com',
-    '3': '3) 搜狗图片 https://pic.sogou.com',
-    '4': '4) 发表情 https://fabiaoqing.com',
-    '5': '5) 逗比拯救世界 http://www.dbbqb.com',
-    '6': '6) 爱斗图 http://www.adoutu.com',
-    '7': '7) DIY斗图 https://www.diydoutu.com',
-    '8': '8) 表情集室 http://emoji.adesk.com',
-    '9': '9) 逗图网 https://dou.yuanmazg.com',
+    '1': '图源一', //'1) 我爱斗图 https://www.52doutu.cn',
+    '2': '图源二', //'2) 斗图啦 http://www.doutula.com',
+    '3': '图源三', // '3) 搜狗图片 https://pic.sogou.com',
+    '4': '图源四', // '4) 发表情 https://fabiaoqing.com',
+    '5': '图源五', // '6) 爱斗图 http://www.adoutu.com',
+    '6': '图源六', //'7) DIY斗图 https://www.diydoutu.com',
+    '7': '图源七', // '8) 表情集室 http://emoji.adesk.com',
+    '8': '图源八', //'9) 逗图网 https://dou.yuanmazg.com',
 };
 
 utools.onPluginEnter(({ code, type, payload }) => {
@@ -58,14 +57,14 @@ $(function () {
         } else if (1 == e.which) {   //左键为1
             if (clickSta == null) {
                 clickSta = setInterval(function () {
-                    window.copyImg(tt.src,false)
+                    window.copyImg(tt.src, false)
                     clearTimeout(clickSta)
                     clickSta = null
                 }, 300)
             } else {
                 clearTimeout(clickSta)
                 clickSta = null
-                window.copyImg(tt.src,true)
+                window.copyImg(tt.src, true)
             }
         }
     })
@@ -229,30 +228,6 @@ function getPic_5(word, page_num) {
     if (page_num <= 1) {
         $(".content ul").html('');
     }
-    page_num = (page_num - 1) * 100;
-    var append_html = ""
-    var url = "http://www.dbbqb.com/api/search/json?over=false&w=" + word + "&start=" + page_num;
-    $.get(url, function (data) {
-        append_html = "";
-        data.forEach(function (u) {
-            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='http://image.dbbqb.com/" + u.path + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
-        })
-        $(".content ul").append(append_html);
-        setTimeout(function () { getPicThen() }, 1000);
-    }).fail(function () {
-        getPicError()
-    });
-}
-
-//图片来源06
-function getPic_6(word, page_num) {
-    loading = true
-    if (isNaN(page_num)) {
-        page_num = 1;
-    }
-    if (page_num <= 1) {
-        $(".content ul").html('');
-    }
     var append_html = ""
     var url = "http://www.adoutu.com/search?type=1&keyword=" + word + "&page=" + page_num;
     $.get(url, function (data) {
@@ -269,8 +244,8 @@ function getPic_6(word, page_num) {
     });
 }
 
-//图片来源07
-function getPic_7(word, page_num) {
+//图片来源06
+function getPic_6(word, page_num) {
     loading = true
     if (isNaN(page_num)) {
         page_num = 1;
@@ -295,8 +270,8 @@ function getPic_7(word, page_num) {
     });
 }
 
-//图片来源08
-function getPic_8(word, page_num) {
+//图片来源07
+function getPic_7(word, page_num) {
     loading = true
     if (isNaN(page_num)) {
         page_num = 1;
@@ -320,7 +295,7 @@ function getPic_8(word, page_num) {
     });
 }
 
-function getPic_9(word, page_num) {
+function getPic_8(word, page_num) {
     loading = true
     if (isNaN(page_num)) {
         page_num = 1;
@@ -344,7 +319,7 @@ function getPic_9(word, page_num) {
 }
 
 //推荐列表
-function recommendPicBak() {
+function recommendPic() {
     page_num = 1
     // console.log("recommendPic:" + page_num)
     loading = true
@@ -368,28 +343,7 @@ function recommendPicBak() {
         setTimeout(function () { getPicThen() }, 1000);
     });
 }
-function recommendPic() {
-    page_num = 1
-    loading = true
-    if (isNaN(page_num)) {
-        page_num = 1;
-    }
-    if (page_num <= 1) {
-        $(".content ul").html('');
-    }
-    page_num = (page_num - 1) * 100;
-    var append_html = ""
-    var url = "https://www.dbbqb.com/api/search/json?size=60";
-    $.get(url, function (data) {
-        append_html = "";
-        data.forEach(function (u) {
-            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='http://image.dbbqb.com/" + u.path + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
-        })
-        $(".content ul").append(append_html);
-        setTimeout(function () { getPicThen() }, 1000);
-    });
 
-}
 
 function hiddenBigImg() {
     $('.float_img').css({

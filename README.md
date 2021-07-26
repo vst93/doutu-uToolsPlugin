@@ -7,19 +7,6 @@
 
 项目地址：[https://github.com/vst93/doutu-uToolsPlugin](https://github.com/vst93/doutu-uToolsPlugin)
 
-##### 数据来源：
-
-- 图源 01 ：https://www.52doutu.cn
-- 图源 02（默认）：http://www.doutula.com
-- 图源 03（不推荐）：https://pic.sogou.com
-- 图源 04 ：https://fabiaoqing.com
-- 图源 05 ：http://www.dbbqb.com
-- ~~图源 06 ：https://b7.cn/~~
-- 图源 06 ：http://www.adoutu.com
-- 图源 07 ：https://www.diydoutu.com
-- 图源 08 ：http://emoji.adesk.com
-- 图源 09 ：https://dou.yuanmazg.com
-
 
 ##### 图源切换： 
 - 点击右下方设置按钮 **（部分图源在一些地区访问过慢或失效，请尝试切换图源）**
@@ -84,3 +71,6 @@
 
 `v0.2.30` *(2021-06-21)*
 - 添加双击直接插入
+
+`v0.2.40` *(2021-07-26)*
+- 图源清理
