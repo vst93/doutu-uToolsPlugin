@@ -51,20 +51,21 @@ $(function () {
     clickSta = null
     $(".float_img").on('mouseup', function (e) {
         window.cleanTempImageCahce()
+        var imgSrc = tt.src
         //右键为3
         if (3 == e.which) {
-            utools.shellOpenExternal(tt.src)
+            utools.shellOpenExternal(imgSrc)
         } else if (1 == e.which) {   //左键为1
             if (clickSta == null) {
                 clickSta = setInterval(function () {
-                    window.copyImg(tt.src, false)
+                    window.copyImg(imgSrc, false)
                     clearTimeout(clickSta)
                     clickSta = null
                 }, 300)
             } else {
                 clearTimeout(clickSta)
                 clickSta = null
-                window.copyImg(tt.src, true)
+                window.copyImg(imgSrc, true)
             }
         }
     })
