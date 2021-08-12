@@ -20,13 +20,12 @@ utools.onPluginEnter(({ code, type, payload }) => {
     } else {
         $(document.body).removeClass('dark-mode');
     }
-    recommendPic()
-    // utools.setExpendHeight(0);
+   
     utools.setSubInput(({
         text
     }) => {
         this.text = text
-        this.page = 1
+        page = 1
         if (text[text.length - 1] == ' ') {
             text = text.replace(/(\s*$)/g, "");
             this.text = text;
@@ -34,6 +33,15 @@ utools.onPluginEnter(({ code, type, payload }) => {
             enterText();
         }
     }, "想搜点啥（搜索结果点击即可复制到剪切板）");
+
+    if (type == 'over') {
+        text = payload;
+        utools.setSubInputValue(text);
+        enterText();
+    }else{
+        recommendPic()
+    }
+ 
 });
 
 $(document).keydown(e => {
