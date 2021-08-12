@@ -5,13 +5,20 @@
 	"author": "vst",
 	"main": "index.html",
 	"logo": "logo.jpg",
-	"version": "0.2.41",
+	"version": "0.2.42",
 	"preload":"preload.js",
 	"features": [
 	    {
 			"code": "dt",
 			"explain": "斗图",
-	        "cmds":["斗图","doutu"]
+	        "cmds":[
+				"doutu",
+				"斗图",
+				{
+					"type": "over",
+					"label": "斗图"
+				}
+			]
 		}
 	]
 }
