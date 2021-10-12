@@ -86,27 +86,54 @@ copyImg = (imgUrl, ctrlV) => {
                         imageType = re[1];
                         break;
                     }
-                    // 过滤data:URL
-                    base64Data = base64Data.replace(/^data:.+;base64,/, '');
-                    // base64Data = base64Data.replace(/^data:text\/plain;base64,/, 'data:image/gif;base64,');
+                    if (imageType != 'gif') {
+                        utools.copyImage(base64Data)
+                    } else {
+                        // 过滤data:URL
+                        base64Data = base64Data.replace(/^data:.+;base64,/, '');
+                        var dataBuffer = new Buffer.from(base64Data, 'base64');
+                        path = path + imageType;
+                        console.log(path)
+                        fs.writeFile(path, dataBuffer, err => {
+                            // utools.copyImage(path)
 
-                    var dataBuffer = new Buffer.from(base64Data, 'base64');
-                    path = path + imageType;
-                    console.log(path)
-                    fs.writeFile(path, dataBuffer, err => {
-                        clipboard.writeBuffer(
-                            'NSFilenamesPboardType',
-                            Buffer.from(`
-                  <?xml version="1.0" encoding="UTF-8"?>
-                  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-                  <plist version="1.0">
-                    <array>
-                      <string>`+ path + `</string>
-                    </array>
-                  </plist>
-                `)
-                        )
-                    });
+                            //         clipboard.writeBuffer(
+                            //             'NSFilenamesPboardType',
+                            //             Buffer.from(`
+                            //   <?xml version="1.0" encoding="UTF-8"?>
+                            //   <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+                            //   <plist version="1.0">
+                            //     <array>
+                            //       <string>`+ path + `</string>
+                            //     </array>
+                            //   </plist>
+                            // `)
+                            //         )
+
+                            // fs.readFile(path, (err, data22) => {
+                            //     if (err) {
+                            //         console.log('xxx222')
+                            //     } else {
+                            //         let buffer22 = new Buffer.from(data22, "utf-8");
+
+                            //         aa = clipboard.writeBuffer(
+                            //             "public.utf8-plain-text",
+                            //             buffer22
+                            //         );
+                            //         console.log(aa)
+
+                            //         console.log('xxx')
+                            //     }
+                            // });
+
+
+                            // clipboard.writeBuffer('NSFilenamesPboardType', Buffer.from(plist.build(path)));
+
+                            utools.copyFile(path)
+
+                        });
+                    }
+
                     utools.hideMainWindow()
                     if (ctrlV == true) {
                         utools.simulateKeyboardTap('v', utools.isMacOs() ? 'command' : 'ctrl')
@@ -161,8 +188,58 @@ copyImg = (imgUrl, ctrlV) => {
     } else {
         utools.showNotification('当前系统暂不支持', clickFeatureCode = null, silent = false)
     }
-    
+
 }
+
+
+copyImg2 = (imgUrl, ctrlV) => {
+    var the_dir = utools.getPath('temp') + '/utoolsDoutuPlugin/';
+    var path = the_dir + 'tempImage' + (new Date()).valueOf() + '.';
+    //检查临时目录并创建
+    fs.exists(the_dir, function (exists) {
+        if (!exists) {
+            fs.mkdir(the_dir, err => {
+            })
+        }
+    });
+    fetch(imgUrl)
+        .then(respone => respone.blob())    // 将响应体转换成blob格式数据
+        .then(blob => {
+            let reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onloadend = function () {
+                let base64Data = reader.result;
+                // var dataHeader = /^data:image\/(\w+);base64,/gim;
+                // var imageType = 'gif';
+                // while (re = dataHeader.exec(base64Data)) {
+                //     imageType = re[1];
+                //     console.log(imageType)
+                //     break;
+                // }
+
+                // 过滤data:URL
+                // base64Data = base64Data.replace(/^data:.+;base64,/, '');
+                // var dataBuffer = new Buffer.from(base64Data, 'base64');
+                // path = path + imageType;
+
+                // fs.writeFile(path, dataBuffer, err => {
+                //     utools.copyFile(path)
+                // });
+                console.log(base64Data)
+                aaa = utools.copyImage(base64Data)
+                console.log(aaa)
+
+                utools.hideMainWindow()
+                if (ctrlV == true) {
+                    utools.simulateKeyboardTap('v', utools.isMacOs() ? 'command' : 'ctrl')
+                }
+            };
+
+        })
+        .catch(console.error);
+
+}
+
 
 
 /**
