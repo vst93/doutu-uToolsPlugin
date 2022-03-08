@@ -126,3 +126,38 @@ body .line-div{
     background: url(assets/empty.png) no-repeat center;
     background-size: 30%;
 }
+
+.origin-bar{
+    height: 40px;
+    width: 100%;
+    float: left;
+    /* background: rgb(255, 255, 255); */
+    margin: 0 auto;
+    margin-left: 5.5%;
+}
+
+.origin-bar span {
+    width: calc(10.5% - 2px);
+    display: block;
+    float: left;
+    background: #0188c7;
+    margin: 5px 1%;
+    text-align: center;
+    height: 26px;
+    line-height: 26px;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    user-select: none;
+    border: 1px solid #0188c7;
+}
+
+.origin-bar span:hover {
+    background: #00a8f7;
+}
+
+.origin-bar-span-selected{
+    background: none !important;
+    border: 1px dashed #0188c7 !important;
+    color: #0188c7 !important;
+}

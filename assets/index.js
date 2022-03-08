@@ -57,6 +57,7 @@ $(document).keydown(e => {
 
 $(function () {
     clickSta = null
+    showOriginBar()
     $(".float_img").on('mouseup', function (e) {
         window.cleanTempImageCahce()
         var imgSrc = tt.src
@@ -427,8 +428,35 @@ function setSource(num, that) {
     $(that).addClass("selected");
 }
 
+function setSourceQuick(num) {
+    num = parseInt(num)
+    if (num > Object.keys(sourceArr).length) {
+        num = 1
+    } else if (num <= 0) {
+        num = 1
+    }
+
+
+    data = utools.db.get("doutuSourceNo");
+    if (!data) {
+        utools.db.put({
+            _id: "doutuSourceNo",
+            data: num
+        });
+    } else {
+        utools.db.put({
+            _id: "doutuSourceNo",
+            data: num,
+            _rev: data._rev
+        });
+    }
+    // utools.showNotification("已切换至图源 0" + num + "【" + sourceArr[num] + "】", clickFeatureCode = null, silent = false)
+    showOriginBar();
+    enterText();
+}
+
 function enterText() {
-    utools.setExpendHeight(500);
+    // utools.setExpendHeight(500);
     $(".changeSourcePage").hide()
     $(".content").show();
     $(".click-changeSourcePage").show();
@@ -451,4 +479,10 @@ function getPicThen() {
 
 function getPicError() {
     utools.showNotification("当前图源访问异常【" + sourceArr[getSource()] + "】，请切换图源或检查网络状态", clickFeatureCode = null, silent = false)
+}
+
+function showOriginBar(){
+    $('.origin-bar span').removeClass("origin-bar-span-selected");
+    theId = getSource();
+    $(".origin-bar").children("span").eq(theId - 1).addClass("origin-bar-span-selected");
 }
