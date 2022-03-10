@@ -101,6 +101,9 @@ $(document).scroll(() => {
 
 
 function getPic(word, page_num) {
+    if(word==''){
+        return 
+    }
     $('body').css('background-image', 'none')
     num = getSource()
     eval("getPic_" + num + "(word,page_num)");
@@ -118,6 +121,10 @@ function getPic_1(word, page_num) {
     var append_html = ""
     var url = "http://www.52doutu.cn/api/?types=search&action=searchpic&limit=60&wd=" + word + "&offset=" + (page_num - 1);
     $.get(url, function (data) {
+        if(data.rows==undefined){
+            getPicError()
+            return
+        }
         append_html = "";
         data.rows.forEach(function (u) {
             append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u.url + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
@@ -130,7 +137,7 @@ function getPic_1(word, page_num) {
 }
 
 //图片来源02
-function getPic_2(word, page_num) {
+function getPic_2_baj(word, page_num) {
     loading = true
     if (isNaN(page_num)) {
         page_num = 1;
@@ -154,7 +161,7 @@ function getPic_2(word, page_num) {
 }
 
 //图片来源03
-function getPic_3(word, page_num) {
+function getPic_3_bak(word, page_num) {
     loading = true
     if (isNaN(page_num)) {
         page_num = 1;
@@ -173,6 +180,40 @@ function getPic_3(word, page_num) {
     }).error(function () {
         getPicError()
     })
+}
+function getPic_3(word, page_num) {
+    loading = true
+    if (isNaN(page_num)) {
+        page_num = 1;
+    }
+    if (page_num <= 1) {
+        $(".content ul").html('');
+    }
+    s = (page_num - 1)*48
+    var append_html = ""
+    var url = "http://pic.sogou.com/napi/wap/searchlist";
+
+    $.post(url, { start: s,keyword:word }, function (result) {
+        console.log(result)
+        // $("span").html(result);
+        $.each(result.data.picResult.items, function (i, item) {
+            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + item.picUrl + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
+        });
+        $(".content ul").append(append_html);
+        setTimeout(function () { getPicThen() }, 1000);
+    }).error(function () {
+        getPicError()
+    });
+
+    // $.getJSON(url, function (data) {
+    //     $.each(data.items, function (i, item) {
+    //         append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + item.picUrl + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
+    //     });
+    //     $(".content ul").append(append_html);
+    //     setTimeout(function () { getPicThen() }, 1000);
+    // }).error(function () {
+    //     getPicError()
+    // })
 }
 
 //图片来源04
@@ -400,6 +441,12 @@ function showChangeSourcePage() {
     });
 }
 
+
+function toTop() {
+    $(document).scrollTop(0)
+}
+
+
 function setSource(num, that) {
     num = parseInt(num)
     if (num > Object.keys(sourceArr).length) {
@@ -456,6 +503,9 @@ function setSourceQuick(num) {
 }
 
 function enterText() {
+    if(text==''){
+        return
+    }
     // utools.setExpendHeight(500);
     $(".changeSourcePage").hide()
     $(".content").show();
