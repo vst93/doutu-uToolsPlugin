@@ -128,36 +128,36 @@ body .line-div{
 }
 
 .origin-bar{
-    height: 40px;
-    width: 100%;
+    height: 32px;
+    width: 111%;
     float: left;
-    /* background: rgb(255, 255, 255); */
     margin: 0 auto;
-    margin-left: 5.5%;
+    border-bottom: 1px solid #9e9e9e;
 }
 
 .origin-bar span {
     width: calc(10.5% - 2px);
     display: block;
     float: left;
-    background: #0188c7;
+    /* background: #0188c7; */
     margin: 5px 1%;
     text-align: center;
     height: 26px;
     line-height: 26px;
-    border-radius: 5px;
-    color: #fff;
+    /* border-radius: 26px; */
+    color: #2B2C2D;
     cursor: pointer;
     user-select: none;
-    border: 1px solid #0188c7;
+    /* border: 1px solid #0188c7; */
 }
 
 .origin-bar span:hover {
-    background: #00a8f7;
+    color: #2196f3;
 }
 
 .origin-bar-span-selected{
     background: none !important;
-    border: 1px dashed #0188c7 !important;
-    color: #0188c7 !important;
+    /* border: 1px dashed #0188c7 !important; */
+    color: #2196f3 !important;
+    border-bottom: 2px solid #2196f3;
 }
