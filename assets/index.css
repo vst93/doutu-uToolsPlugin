@@ -5,6 +5,7 @@ body{
     min-height: 80vh;
     background: url(assets/empty.png) no-repeat center;
     background-size: 30% !important;
+    overflow-x: hidden;
 }
 .content{
     width: 100%;
@@ -79,10 +80,35 @@ body{
     cursor: pointer;
 }
 
+
 .click-changeSourcePage:hover,.click-content:hover{
     opacity: 1;
     background-size: 40px 40px;
 }
+
+
+.click-to-top{
+    background-image: url(to-top.png);
+    width: 40px;
+    height: 40px;
+    z-index: 99;
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: fixed;
+    right: 0px; 
+    bottom: 0px;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+
+.click-to-top:hover,.click-content:hover{
+    opacity: 1;
+    background-size: 32px 32px;
+}
+
+
 .click-content{
     background-image: url(set-back.png);
     width: 40px;
@@ -133,7 +159,9 @@ body .line-div{
     float: left;
     margin: 0 auto;
     border-bottom: 1px solid #9e9e9e;
+    margin-bottom: 1px;
 }
+
 
 .origin-bar span {
     width: calc(10.5% - 2px);
@@ -145,7 +173,7 @@ body .line-div{
     height: 26px;
     line-height: 26px;
     /* border-radius: 26px; */
-    color: #2B2C2D;
+    color: #818181;
     cursor: pointer;
     user-select: none;
     /* border: 1px solid #0188c7; */
