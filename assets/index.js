@@ -137,7 +137,7 @@ function getPic_1(word, page_num) {
 }
 
 //图片来源02
-function getPic_2_baj(word, page_num) {
+function getPic_2(word, page_num) {
     loading = true
     if (isNaN(page_num)) {
         page_num = 1;
