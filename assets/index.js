@@ -196,21 +196,19 @@ function getPic_3(word, page_num) {
     if (page_num <= 1) {
         $(".content ul").html('');
     }
-    s = (page_num - 1) * 48
     var append_html = ""
-    var url = "http://pic.sogou.com/napi/wap/searchlist";
-
-    $.post(url, { start: s, keyword: word }, function (result) {
-        console.log(result)
-        // $("span").html(result);
-        $.each(result.data.picResult.items, function (i, item) {
-            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + item.picUrl + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
+    word = word + " 表情"
+    var url = "https://image.sogou.com/napi/wap/pic?query=" + word + "&start=" + (page_num - 1) * 20 + "&reqFrom=wap_result";
+    $.get(url, function (data) {
+        $.each(data.data.items, function (i, item) {
+            
+            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + item.picUrl + "' onerror=\"this.onerror='';src='assets/loading.jpg';\" /></li>";
         });
         $(".content ul").append(append_html);
         setTimeout(function () { getPicThen() }, 1000);
     }).error(function () {
         getPicError()
-    });
+    })
 }
 
 //图片来源04
