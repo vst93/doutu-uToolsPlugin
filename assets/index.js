@@ -129,7 +129,7 @@ function getPic_1(word, page_num) {
                 if (page_num == 1 && i == 0) {  //第一个为无效图片去除
 
                 } else {
-                    append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u.url + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
+                    append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u.url + "' onerror=\"this.onerror='';src='assets/loading.jpg'\" /></li>";
                 }
                 i++;
             })
@@ -156,7 +156,7 @@ function getPic_2(word, page_num) {
         var urlArr = window.matchImgUrl(data);
         append_html = "";
         urlArr.forEach(function (u) {
-            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
+            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u + "' onerror=\"this.onerror='';src='assets/loading.jpg'\" /></li>";
         })
         $(".content ul").append(append_html);
         setTimeout(function () { getPicThen() }, 1000);
@@ -178,7 +178,7 @@ function getPic_3_bak(word, page_num) {
     var url = "https://pic.sogou.com/pics/json.jsp?query=" + word + "&st=5&start=" + (page_num - 1) * 16 + "&xml_len=16";
     $.getJSON(url, function (data) {
         $.each(data.items, function (i, item) {
-            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + item.picUrl + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
+            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + item.picUrl + "' onerror=\"this.onerror='';src='assets/loading.jpg'\" /></li>";
         });
         $(".content ul").append(append_html);
         setTimeout(function () { getPicThen() }, 1000);
@@ -212,7 +212,7 @@ function getPic_3(word, page_num) {
 }
 
 //图片来源04
-function getPic_4(word, page_num) {
+function getPic_4_bak(word, page_num) {
     loading = true
     if (isNaN(page_num)) {
         page_num = 1;
@@ -222,20 +222,46 @@ function getPic_4(word, page_num) {
     }
     var append_html = ""
     var url = "https://fabiaoqing.com/search/search/keyword/" + word + "/type/bq/page/" + page_num + ".html";
-    $.get(url, function (data) {
+    $.get(url, {
+        Referer:"https://fabiaoqing.com/"
+    },function (data) {
         var urlArr = window.matchImgUrl(data);
         append_html = "";
         urlArr.forEach(function (u) {
-            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
+            console.log(u)
+            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u + "' onerror=\"this.onerror='';src='assets/loading.jpg'\" /></li>";
         })
         // $.each(data.items, function(i,item){
-        //      append_html  += "<li><img onmouseenter=\"bigImg(this)\" src='"+item.picUrl+"' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
+        //      append_html  += "<li><img onmouseenter=\"bigImg(this)\" src='"+item.picUrl+"' onerror=\"this.onerror='';src='assets/loading.jpg'\" /></li>";
         //   });
         $(".content ul").append(append_html);
         setTimeout(function () { getPicThen() }, 1000);
     }).fail(function () {
         getPicError()
     });
+}
+
+//图片来源04
+function getPic_4(word, page_num) {
+    loading = true
+    if (isNaN(page_num)) {
+        page_num = 1;
+    }
+    if (page_num <= 1) {
+        $(".content ul").html('');
+    }
+    var append_html = ""
+    var url = "https://apim.doutub.com/api/bq/search?keyword=" + word + "&pageSize=20&curPage=" + page_num;
+    $.getJSON(url, function (data) {
+        console.log(data)
+        $.each(data.data.rows, function (i, item) {
+            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='https://image.baidu.com/search/down?url=" + item.path + "' onerror=\"this.onerror='';src='assets/loading.jpg'\" /></li>";
+        });
+        $(".content ul").append(append_html);
+        setTimeout(function () { getPicThen() }, 1000);
+    }).error(function () {
+        getPicError()
+    })
 }
 
 function bigImg(that) {
@@ -287,7 +313,7 @@ function getPic_5(word, page_num) {
             if (data.IsSuccess) {
                 append_html = "";
                 data.Data.forEach(function (u) {
-                    append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u.url + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
+                    append_html += "<li><img onmouseenter=\"bigImg(this)\" src='https://image.baidu.com/search/down?url=" + u.url + "' onerror=\"this.onerror='';src='assets/loading.jpg'\" /></li>";
                 })
                 $(".content ul").append(append_html);
             }
@@ -317,7 +343,7 @@ function getPic_6(word, page_num) {
         append_html = "";
         // console.log(urlArr)
         urlArr.forEach(function (u) {
-            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
+            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u + "' onerror=\"this.onerror='';src='assets/loading.jpg'\" /></li>";
         })
         $(".content ul").append(append_html);
         setTimeout(function () { getPicThen() }, 1000);
@@ -342,7 +368,7 @@ function getPic_7(word, page_num) {
         append_html = "";
         data = data.res.data
         data.forEach(function (u) {
-            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u.small_url + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
+            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u.small_url + "' onerror=\"this.onerror='';src='assets/loading.jpg'\" /></li>";
         })
         $(".content ul").append(append_html);
         setTimeout(function () { getPicThen() }, 1000);
@@ -366,7 +392,7 @@ function getPic_8(word, page_num) {
         var urlArr = window.matchImgUrl(data);
         append_html = "";
         urlArr.forEach(function (u) {
-            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='https://dou.yuanmazg.com/" + u + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
+            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='https://dou.yuanmazg.com/" + u + "' onerror=\"this.onerror='';src='assets/loading.jpg'\" /></li>";
         })
         $(".content ul").append(append_html);
         setTimeout(function () { getPicThen() }, 1000);
@@ -394,7 +420,7 @@ function recommendPic() {
         append_html = "";
         data = data.res.data
         data.forEach(function (u) {
-            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u.small_url + "' onerror=\"this.onerror='';src='assets/loading.gif'\" /></li>";
+            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u.small_url + "' onerror=\"this.onerror='';src='assets/loading.jpg'\" /></li>";
         })
         $(".content ul").append(append_html);
         setTimeout(function () { getPicThen() }, 1000);
