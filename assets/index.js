@@ -2,6 +2,7 @@ var text = ''
 var page = 1
 var loading = false
 var tt = false
+var float_img_status = 0
 
 var sourceArr = {
     '1': '图源一', //'1) 我爱斗图 https://www.52doutu.cn',
@@ -63,7 +64,14 @@ $(function () {
         var imgSrc = tt.src
         //右键为3
         if (3 == e.which) {
-            utools.shellOpenExternal(imgSrc)
+            // utools.shellOpenExternal(imgSrc)
+            if (float_img_status==1){
+                float_img_status = 0;
+            }else{
+                float_img_status = 1;
+            }
+            
+            refreshMenuDiv();
         } else if (1 == e.which) {   //左键为1
             if (clickSta == null) {
                 clickSta = setInterval(function () {
@@ -77,6 +85,9 @@ $(function () {
                 window.copyImg(imgSrc, true)
             }
         }
+    })
+    $('.float_img').on('mouseleave', function (e) {
+        float_img_status = 0;
     })
 })
 
@@ -265,15 +276,13 @@ function getPic_4(word, page_num) {
 }
 
 function bigImg(that) {
+    float_img_status = 0;
     tt = that
     w = $(that).width()
     h = $(that).height()
     x = $(that).position().top;
     y = $(that).position().left;
-    // url = $(that).children('img').attr('src')
     url = $(that).attr('src')
-    // console.log('onMouse:'+url)
-
     $('.float_img').css({
         'position': 'relative',
         'width': 1.2 * w + "px",
@@ -288,6 +297,15 @@ function bigImg(that) {
         'background-position': 'center',
         'background-color': '#ffffff',
     });
+    refreshMenuDiv();
+}
+
+function refreshMenuDiv(){
+    if (float_img_status == 1) {
+        $('.float_img .float_img_menu').show();
+    } else {
+        $('.float_img .float_img_menu').hide();
+    }
 }
 
 
