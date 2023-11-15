@@ -289,12 +289,12 @@ matchImgUrl = str => {
 }
 
 
-matchImgUrl_6 = str => {
+matchImgUrl_5 = str => {
     // var reg = /<a\Wclass="col-sm-3".*<img\Wsrc="(.*)"\Wtitle=/gim;
-    var reg = /img src="(.*)" title/gim;
+    var reg = /img src="([\w\/.]*)" alt/gim;
     var res = []
     while (re = reg.exec(str)) {
-        res.push(re[1])
+        res.push("http:"+re[1])
     }
     return res;
 }

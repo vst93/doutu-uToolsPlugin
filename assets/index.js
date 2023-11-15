@@ -4,14 +4,14 @@ var loading = false
 var tt = false
 
 var sourceArr = {
-    '1': '图源一', //'1) 我爱斗图 https://www.52doutu.cn',
-    '2': '图源二', //'2) 斗图啦 http://www.doutula.com',
-    '3': '图源三', // '3) 搜狗图片 https://pic.sogou.com',
-    '4': '图源四', // '4) 发表情 https://fabiaoqing.com',
-    '5': '图源五', // '6) 爱斗图 http://www.adoutu.com',
-    '6': '图源六', //'7) DIY斗图 https://www.diydoutu.com',
-    '7': '图源七', // '8) 表情集室 http://emoji.adesk.com',
-    '8': '图源八', //'9) 逗图网 https://dou.yuanmazg.com',
+    '1': '图源一', //'我爱斗图 https://www.52doutu.cn',
+    '2': '图源二', //'斗图啦 http://www.doutula.com',
+    '3': '图源三', // '搜狗图片 https://pic.sogou.com',
+    '4': '图源四', // '发表情 https://www.doutub.com/',
+    '5': '图源五', // '爱斗图 https://aidotu.com',
+    '6': '图源六', //'DIY斗图 https://www.diydoutu.com',
+    '7': '图源七', // '表情集室 http://emoji.adesk.com',
+    '8': '图源八', //'https://www.haidaoc.com',
 };
 
 utools.onPluginEnter(({ code, type, payload }) => {
@@ -300,30 +300,34 @@ function getPic_5(word, page_num) {
     if (page_num <= 1) {
         $(".content ul").html('');
     }
-    var append_html = ""
-    var url = "http://doutu.ucode.top/api/getpng?tokenId=F96C2856-02FA-4763-B82F-62D0E22AEE47&title=" + word + "&pageIndex=" + page_num;
-    $.ajax({
-        type: "GET",
-        headers: {
-            'Content-Type': "application/json; charset=utf-8"
-        },
-        url,
-        success: function (datainfo) {
-            const data = JSON.parse(datainfo);
-            if (data.IsSuccess) {
+
+    //获取关键词pinyin
+    pyUrl = "https://aidotu.com/api/pinyin.html?type=1&kw=" + encodeURI(word);
+
+    $.get(pyUrl,{},function(obj){
+        console.log(obj)
+        if(obj.data.url){
+            var pageUrl = obj.data.url.split('.')
+            pageUrl = pageUrl[0]
+            var append_html = ""
+            var url = "https://aidotu.com"+pageUrl+"-0-0-"+page_num+".html" ;
+            $.get(url, function (data) {
+                var urlArr = window.matchImgUrl_5(data);
                 append_html = "";
-                data.Data.forEach(function (u) {
-                    append_html += "<li><img onmouseenter=\"bigImg(this)\" src='https://image.baidu.com/search/down?url=" + u.url + "' onerror=\"this.onerror='';src='assets/loading.jpg'\" /></li>";
+                // console.log(urlArr)
+                urlArr.forEach(function (u) {
+                    append_html += "<li><img onmouseenter=\"bigImg(this)\" src='" + u + "' onerror=\"this.onerror='';src='assets/loading.jpg'\" /></li>";
                 })
                 $(".content ul").append(append_html);
-            }
-
-            setTimeout(function () { getPicThen() }, 1000);
-        },
-        error: function (err) {
+                setTimeout(function () { getPicThen() }, 1000);
+            }).fail(function () {
+                getPicError()
+            });
+        }else{
             getPicError()
         }
-    });
+   }); 
+
 }
 
 //图片来源06
@@ -387,12 +391,12 @@ function getPic_8(word, page_num) {
         $(".content ul").html('');
     }
     var append_html = ""
-    var url = "https://dou.yuanmazg.com/so?keyword=" + word + "&page=" + page_num;
+    var url = "https://www.haidaoc.com/so?keyword=" + encodeURI(word) + "&page=" + page_num;
     $.get(url, function (data) {
         var urlArr = window.matchImgUrl(data);
         append_html = "";
         urlArr.forEach(function (u) {
-            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='https://dou.yuanmazg.com/" + u + "' onerror=\"this.onerror='';src='assets/loading.jpg'\" /></li>";
+            append_html += "<li><img onmouseenter=\"bigImg(this)\" src='https://www.haidaoc.com" + u + "' onerror=\"this.onerror='';src='assets/loading.jpg'\" /></li>";
         })
         $(".content ul").append(append_html);
         setTimeout(function () { getPicThen() }, 1000);
